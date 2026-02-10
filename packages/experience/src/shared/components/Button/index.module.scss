@@ -51,7 +51,7 @@
 
 .primary {
   border: none;
-  background: var(--color-brand-default);
+  background: #00002f;
   color: var(--color-static-white);
 
   &.disabled:not(.loading),
@@ -61,11 +61,15 @@
   }
 
   &:active {
-    background: var(--color-brand-pressed);
+    background: #4300da;
   }
 
   &.loadingActive {
-    background-color: var(--color-brand-loading);
+    background-color: #6137f6;
+  }
+
+  &:hover {
+    background: #00002f;
   }
 }
 
@@ -116,7 +120,7 @@
     }
 
     &:not(:disabled):not(:active):not(.loadingActive):hover {
-      background: var(--color-brand-hover);
+      background: #00002f;
     }
   }
 

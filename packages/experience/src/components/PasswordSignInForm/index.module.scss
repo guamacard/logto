@@ -19,6 +19,7 @@
     margin-top: _.unit(-1);
     align-self: start;
     width: auto;
+    color: #ff8473;
   }
 
   .message {
@@ -32,6 +33,27 @@
 
   .hidden {
     display: none;
+  }
+
+  .customInputFieldHidden {
+    display: none;
+  }
+
+  .dummyCustomInputField {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0 20px;
+    color: #c1c4cd;
+    background-color: #f7f9fc;
+    border: 1px solid #c1c4cd;
+    border-radius: 12px;
+    padding: 0 18px;
+    font-size: 18px;
+
+    p {
+      margin: 15px 0;
+    }
   }
 }
 

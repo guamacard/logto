@@ -34,3 +34,11 @@
     flex: 5;
   }
 }
+
+.customTitle {
+  font: var(--font-headline-2);
+  color: var(--color-type-primary);
+  text-align: center;
+  font-size: 40px;
+  line-height: normal;
+}

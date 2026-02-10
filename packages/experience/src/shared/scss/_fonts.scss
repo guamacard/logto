@@ -1,7 +1,31 @@
 /* Typography Foundation */
 
+@font-face {
+  font-family: Manrope;
+  src: url('../assets/fonts/Manrope-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Manrope;
+  src: url('../assets/fonts/Manrope-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Manrope;
+  src: url('../assets/fonts/Manrope-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 $font-family:
-  -apple-system,
+  'Manrope',
   system-ui,
   'BlinkMacSystemFont',
   'Segoe UI',
