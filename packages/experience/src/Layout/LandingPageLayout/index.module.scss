@@ -34,3 +34,11 @@
     flex: 5;
   }
 }
+
+.customTitle {
+  font: 600 32px/32px "Manrope", sans-serif;
+  color: var(--color-type-primary);
+  text-align: center;
+  line-height: normal;
+  letter-spacing: 0.2px;
+}

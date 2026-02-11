@@ -132,7 +132,7 @@ const SignIn = () => {
       <WebAuthnContextProvider>
         <SingleSignOnFormModeContextProvider>
           <Main signInMethods={signInMethods} socialConnectors={socialConnectors} />
-          <SignInFooters />
+          {/* <SignInFooters /> */}
         </SingleSignOnFormModeContextProvider>
       </WebAuthnContextProvider>
       {

@@ -1,5 +1,5 @@
-@use './colors' as colors;
 @use './fonts' as fonts;
+@use './colors' as colors;
 
 body {
   @include colors.static;

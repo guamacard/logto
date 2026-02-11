@@ -4,9 +4,9 @@
   @include _.flex-row;
   justify-content: center;
   align-items: center;
-  height: 44px;
-  padding: 0 _.unit(4);
-  border-radius: var(--radius);
+  height: 55px;
+  padding: 0 16px;
+  border-radius: 12px;
   cursor: pointer;
   font: var(--font-label-1);
   -webkit-appearance: none;
@@ -15,6 +15,8 @@
   transition: background 0.2s ease-in-out;
   user-select: none;
   overflow: hidden;
+  font-size: 18px;
+  font-weight: 600;
 
   .content {
     position: relative;
@@ -51,7 +53,7 @@
 
 .primary {
   border: none;
-  background: var(--color-brand-default);
+  background: #00002f;
   color: var(--color-static-white);
 
   &.disabled:not(.loading),
@@ -61,11 +63,15 @@
   }
 
   &:active {
-    background: var(--color-brand-pressed);
+    background: #4300da;
   }
 
   &.loadingActive {
-    background-color: var(--color-brand-loading);
+    background-color: #6137f6;
+  }
+
+  &:hover {
+    background: #00002f;
   }
 }
 
@@ -107,7 +113,7 @@
 
 :global(body.desktop) {
   .button {
-    font: var(--font-label-2);
+    // font: var(--font-label-2);
   }
 
   .primary {
@@ -116,7 +122,7 @@
     }
 
     &:not(:disabled):not(:active):not(.loadingActive):hover {
-      background: var(--color-brand-hover);
+      background: #00002f;
     }
   }
 

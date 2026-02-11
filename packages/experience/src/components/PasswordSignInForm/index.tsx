@@ -6,13 +6,14 @@ import { useTranslation } from 'react-i18next';
 
 import UserInteractionContext from '@/Providers/UserInteractionContextProvider/UserInteractionContext';
 import LockIcon from '@/assets/icons/lock.svg?react';
-import { SmartInputField, PasswordInputField } from '@/components/InputFields';
+import { SmartInputField, PinPasswordInput, PasswordInputField } from '@/components/InputFields';
 import CaptchaBox from '@/containers/CaptchaBox';
 import ForgotPasswordLink from '@/containers/ForgotPasswordLink';
 import TermsAndPrivacyCheckbox from '@/containers/TermsAndPrivacyCheckbox';
+import useLoginHint from '@/hooks/use-login-hint';
 import usePasswordSignIn from '@/hooks/use-password-sign-in';
 import usePrefilledIdentifier from '@/hooks/use-prefilled-identifier';
-import { useForgotPasswordSettings } from '@/hooks/use-sie';
+// Import { useForgotPasswordSettings } from '@/hooks/use-sie';
 import useSingleSignOnWatch from '@/hooks/use-single-sign-on-watch';
 import useTerms from '@/hooks/use-terms';
 import Button from '@/shared/components/Button';
@@ -38,14 +39,17 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
   const { t } = useTranslation();
 
   const { errorMessage, clearErrorMessage, onSubmit } = usePasswordSignIn();
-  const { isForgotPasswordEnabled } = useForgotPasswordSettings();
+  // Const { isForgotPasswordEnabled } = useForgotPasswordSettings();
   const { termsValidation, agreeToTermsPolicy } = useTerms();
   const { setIdentifierInputValue } = useContext(UserInteractionContext);
   const prefilledIdentifier = usePrefilledIdentifier({ enabledIdentifiers: signInMethods });
+  const loginHint = useLoginHint();
+
+  // Disable the identifier input if there's a login hint from URL
+  const isIdentifierDisabled = Boolean(loginHint);
 
   const {
     watch,
-    register,
     handleSubmit,
     control,
     formState: { errors, isValid, isSubmitting },
@@ -123,15 +127,42 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
           },
         }}
         render={({ field, formState: { defaultValues } }) => (
-          <SmartInputField
-            autoFocus={autoFocus}
-            className={styles.inputField}
-            {...field}
-            isDanger={!!errors.identifier}
-            errorMessage={errors.identifier?.message}
-            enabledTypes={signInMethods}
-            defaultValue={defaultValues?.identifier?.value}
-          />
+          <>
+            <SmartInputField
+              autoFocus={autoFocus && !isIdentifierDisabled}
+              className={styles.customInputFieldHidden}
+              {...field}
+              isDanger={!!errors.identifier}
+              errorMessage={errors.identifier?.message}
+              enabledTypes={signInMethods}
+              defaultValue={defaultValues?.identifier?.value}
+              disabled={isIdentifierDisabled}
+            />
+            <div className={styles.dummyCustomInputField}>
+              <p>
+                {defaultValues?.identifier?.value && defaultValues.identifier.value.length > 0
+                  ? defaultValues.identifier.value
+                  : '--- ---'}
+              </p>
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 28 28"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle cx="14" cy="14" r="14" fill="white" />
+                <circle cx="14" cy="14" r="10.5" fill="#FF8473" />
+                <path
+                  d="M10 13.8L12.8 16.6L18.4 11"
+                  stroke="white"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+          </>
         )}
       />
       {showSingleSignOnForm && (
@@ -139,25 +170,44 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
       )}
 
       {!showSingleSignOnForm && (
-        <PasswordInputField
-          className={styles.inputField}
-          autoComplete="current-password"
-          label={t('input.password')}
-          isDanger={!!errors.password}
-          errorMessage={errors.password?.message}
-          {...register('password', { required: t('error.password_required') })}
+        // <PasswordInputField
+        //   className={styles.inputField}
+        //   autoComplete="current-password"
+        //   label={t('input.password')}
+        //   isDanger={!!errors.password}
+        //   errorMessage={errors.password?.message}
+        //   autoFocus={autoFocus && isIdentifierDisabled}
+        //   {...register('password', { required: t('error.password_required') })}
+        // />
+        <Controller
+          control={control}
+          name="password"
+          rules={{ required: t('error.password_required') }}
+          render={({ field }) => (
+            <PinPasswordInput
+              className={styles.inputField}
+              name="password"
+              value={field.value}
+              errorMessage={errors.password?.message}
+              autoFocus={autoFocus && isIdentifierDisabled}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+            />
+          )}
         />
       )}
 
       {errorMessage && <ErrorMessage className={styles.formErrors}>{errorMessage}</ErrorMessage>}
 
-      {isForgotPasswordEnabled && !showSingleSignOnForm && (
+      {/* {isForgotPasswordEnabled && !showSingleSignOnForm && ( */}
+      <div className={styles.customForgotPassword}>
         <ForgotPasswordLink
           className={styles.link}
           identifier={watch('identifier').type}
           value={watch('identifier').value}
         />
-      )}
+      </div>
+      {/* )} */}
 
       {/**
        * Have to use css to hide the terms element.
@@ -174,6 +224,12 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
       />
 
       <CaptchaBox />
+
+      <div
+        style={{
+          height: '20px',
+        }}
+      />
 
       <Button
         name="submit"

@@ -1,13 +1,13 @@
 import { type ConsentInfoResponse } from '@logto/schemas';
-import classNames from 'classnames';
+// Import classNames from 'classnames';
 import type { TFuncKey } from 'i18next';
 import type { ReactNode } from 'react';
 import { useContext } from 'react';
 
 import PageContext from '@/Providers/PageContextProvider/PageContext';
-import BrandingHeader from '@/components/BrandingHeader';
-import { getBrandingLogoUrl } from '@/shared/utils/logo';
-import { layoutClassNames } from '@/utils/consts';
+// Import BrandingHeader from '@/components/BrandingHeader';
+// import { getBrandingLogoUrl } from '@/shared/utils/logo';
+// import { layoutClassNames } from '@/utils/consts';
 
 import FirstScreenLayout from '../FirstScreenLayout';
 
@@ -36,7 +36,7 @@ const LandingPageLayout = ({ children, title, titleInterpolation, thirdPartyBran
 
   return (
     <FirstScreenLayout pageMeta={{ titleKey: title, titleKeyInterpolation: titleInterpolation }}>
-      <BrandingHeader
+      {/* <BrandingHeader
         className={classNames(styles.header, layoutClassNames.brandingHeader)}
         headline={title}
         headlineInterpolation={titleInterpolation}
@@ -45,7 +45,10 @@ const LandingPageLayout = ({ children, title, titleInterpolation, thirdPartyBran
           thirdPartyBranding &&
           getBrandingLogoUrl({ theme, branding: thirdPartyBranding, isDarkModeEnabled })
         }
-      />
+      /> */}
+      <p className={styles.customTitle}>
+        Ingresa tu <br /> contraseña
+      </p>
       {children}
     </FirstScreenLayout>
   );
