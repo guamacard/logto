@@ -4,9 +4,9 @@
   @include _.flex-row;
   justify-content: center;
   align-items: center;
-  height: 44px;
-  padding: 0 _.unit(4);
-  border-radius: var(--radius);
+  height: 55px;
+  padding: 0 16px;
+  border-radius: 12px;
   cursor: pointer;
   font: var(--font-label-1);
   -webkit-appearance: none;
@@ -15,6 +15,8 @@
   transition: background 0.2s ease-in-out;
   user-select: none;
   overflow: hidden;
+  font-size: 18px;
+  font-weight: 600;
 
   .content {
     position: relative;
@@ -111,7 +113,7 @@
 
 :global(body.desktop) {
   .button {
-    font: var(--font-label-2);
+    // font: var(--font-label-2);
   }
 
   .primary {

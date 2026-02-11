@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 import UserInteractionContext from '@/Providers/UserInteractionContextProvider/UserInteractionContext';
 import LockIcon from '@/assets/icons/lock.svg?react';
-import { SmartInputField, PasswordInputField } from '@/components/InputFields';
+import { SmartInputField, PinPasswordInput, PasswordInputField } from '@/components/InputFields';
 import CaptchaBox from '@/containers/CaptchaBox';
 import ForgotPasswordLink from '@/containers/ForgotPasswordLink';
 import TermsAndPrivacyCheckbox from '@/containers/TermsAndPrivacyCheckbox';
@@ -50,7 +50,6 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
 
   const {
     watch,
-    register,
     handleSubmit,
     control,
     formState: { errors, isValid, isSubmitting },
@@ -140,7 +139,11 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
               disabled={isIdentifierDisabled}
             />
             <div className={styles.dummyCustomInputField}>
-              <p>{defaultValues?.identifier?.value}</p>
+              <p>
+                {defaultValues?.identifier?.value && defaultValues.identifier.value.length > 0
+                  ? defaultValues.identifier.value
+                  : '--- ---'}
+              </p>
               <svg
                 width="28"
                 height="28"
@@ -167,25 +170,43 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
       )}
 
       {!showSingleSignOnForm && (
-        <PasswordInputField
-          className={styles.inputField}
-          autoComplete="current-password"
-          label={t('input.password')}
-          isDanger={!!errors.password}
-          errorMessage={errors.password?.message}
-          autoFocus={autoFocus && isIdentifierDisabled}
-          {...register('password', { required: t('error.password_required') })}
+        // <PasswordInputField
+        //   className={styles.inputField}
+        //   autoComplete="current-password"
+        //   label={t('input.password')}
+        //   isDanger={!!errors.password}
+        //   errorMessage={errors.password?.message}
+        //   autoFocus={autoFocus && isIdentifierDisabled}
+        //   {...register('password', { required: t('error.password_required') })}
+        // />
+        <Controller
+          control={control}
+          name="password"
+          rules={{ required: t('error.password_required') }}
+          render={({ field }) => (
+            <PinPasswordInput
+              className={styles.inputField}
+              name="password"
+              value={field.value}
+              errorMessage={errors.password?.message}
+              autoFocus={autoFocus && isIdentifierDisabled}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+            />
+          )}
         />
       )}
 
       {errorMessage && <ErrorMessage className={styles.formErrors}>{errorMessage}</ErrorMessage>}
 
       {/* {isForgotPasswordEnabled && !showSingleSignOnForm && ( */}
-      <ForgotPasswordLink
-        className={styles.link}
-        identifier={watch('identifier').type}
-        value={watch('identifier').value}
-      />
+      <div className={styles.customForgotPassword}>
+        <ForgotPasswordLink
+          className={styles.link}
+          identifier={watch('identifier').type}
+          value={watch('identifier').value}
+        />
+      </div>
       {/* )} */}
 
       {/**
@@ -203,6 +224,12 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
       />
 
       <CaptchaBox />
+
+      <div
+        style={{
+          height: '20px',
+        }}
+      />
 
       <Button
         name="submit"

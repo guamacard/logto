@@ -16,10 +16,11 @@
   }
 
   .link {
-    margin-top: _.unit(-1);
+    margin-top: _.unit(3);
     align-self: start;
     width: auto;
     color: #ff8473;
+    font-size: 16px;
   }
 
   .message {
@@ -49,18 +50,25 @@
     border: 1px solid #c1c4cd;
     border-radius: 12px;
     padding: 0 18px;
-    font-size: 18px;
+    // font-size: 18px;
+    font: 500 18px/24px "Manrope", sans-serif;
 
     p {
       margin: 15px 0;
+      min-height: 20px;
     }
+  }
+
+  .customForgotPassword {
+    display: flex;
+    justify-content: flex-end;
   }
 }
 
 :global(.desktop) {
   .form {
     .link {
-      margin-top: _.unit(-2);
+      // margin-top: _.unit(-2);
     }
   }
 }
