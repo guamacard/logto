@@ -12,6 +12,7 @@ import PageContext from '@/Providers/PageContextProvider/PageContext';
 import FirstScreenLayout from '../FirstScreenLayout';
 
 import styles from './index.module.scss';
+import DynamicT from '@/shared/components/DynamicT';
 
 type ThirdPartyBranding = ConsentInfoResponse['application']['branding'];
 

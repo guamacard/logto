@@ -20,7 +20,7 @@
     color: #00002F;
     caret-color: #00002F;
     transition: border-color 0.2s ease;
-    font-size: 60px;
+    // font-size: 40px;
 
     &:focus {
       border-bottom-color: #00002F;
@@ -29,7 +29,7 @@
 
     // Password dots styling
     &[type='password'] {
-      font-size: 32px;
+      font-size: 20px;
       letter-spacing: 0;
       line-height: 48px;
     }
