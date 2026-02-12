@@ -37,6 +37,7 @@ export type FormState = {
 };
 
 const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
+  // console.log(signInMethods);
   const { t } = useTranslation();
 
   const { errorMessage, clearErrorMessage, onSubmit } = usePasswordSignIn();
@@ -45,7 +46,7 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
   const { setIdentifierInputValue } = useContext(UserInteractionContext);
   const prefilledIdentifier = usePrefilledIdentifier({ enabledIdentifiers: signInMethods });
   const loginHint = useLoginHint();
-  const isAdminHost = useAdminHost();
+  const { isAdminHost, setIsAdminHost } = useAdminHost();
 
   // Disable the identifier input if there's a login hint from URL
   const isIdentifierDisabled = Boolean(loginHint);
@@ -57,6 +58,7 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
     control,
     formState: { errors, isValid, isSubmitting },
   } = useForm<FormState>({
+    mode: 'onBlur',
     reValidateMode: 'onBlur',
     defaultValues: {
       identifier: prefilledIdentifier,
@@ -144,7 +146,7 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
               errorMessage={errors.identifier?.message}
               enabledTypes={signInMethods}
               defaultValue={defaultValues?.identifier?.value}
-              disabled={isIdentifierDisabled}
+              // disabled={isIdentifierDisabled}
             />
           ) : (
             <div className={styles.dummyCustomInputField}>
@@ -202,6 +204,7 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
             rules={{ required: t('error.password_required') }}
             render={({ field }) => (
               <PinPasswordInput
+                ref={field.ref}
                 className={styles.inputField}
                 name="password"
                 value={field.value}
@@ -255,6 +258,21 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
         htmlType="submit"
         isLoading={isSubmitting}
       />
+
+      <div
+        style={{
+          height: '40px',
+        }}
+      />
+
+      <div>
+        <input
+          type="checkbox"
+          name="remember"
+          value="true"
+          onChange={() => setIsAdminHost(!isAdminHost)}
+        />
+      </div>
 
       <input hidden type="submit" />
     </form>

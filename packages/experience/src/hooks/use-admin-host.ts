@@ -1,11 +1,11 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 /**
  * Hook to detect if the current host is the admin host
  * Returns true if the host is auth-admin.guamainternal.com
  */
 const useAdminHost = () => {
-  const isAdminHost = useMemo(() => {
+  const _isAdminHost = useMemo(() => {
     if (typeof window === 'undefined') {
       return false;
     }
@@ -14,7 +14,9 @@ const useAdminHost = () => {
     return hostname === 'auth-admin.guamainternal.com';
   }, []);
 
-  return isAdminHost;
+  const [isAdminHost, setIsAdminHost] = useState(_isAdminHost);
+
+  return {isAdminHost, setIsAdminHost};
 };
 
 export default useAdminHost;
