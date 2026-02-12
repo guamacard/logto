@@ -10,6 +10,7 @@ import { SmartInputField, PinPasswordInput, PasswordInputField } from '@/compone
 import CaptchaBox from '@/containers/CaptchaBox';
 import ForgotPasswordLink from '@/containers/ForgotPasswordLink';
 import TermsAndPrivacyCheckbox from '@/containers/TermsAndPrivacyCheckbox';
+import useAdminHost from '@/hooks/use-admin-host';
 import useLoginHint from '@/hooks/use-login-hint';
 import usePasswordSignIn from '@/hooks/use-password-sign-in';
 import usePrefilledIdentifier from '@/hooks/use-prefilled-identifier';
@@ -44,12 +45,14 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
   const { setIdentifierInputValue } = useContext(UserInteractionContext);
   const prefilledIdentifier = usePrefilledIdentifier({ enabledIdentifiers: signInMethods });
   const loginHint = useLoginHint();
+  const isAdminHost = useAdminHost();
 
   // Disable the identifier input if there's a login hint from URL
   const isIdentifierDisabled = Boolean(loginHint);
 
   const {
     watch,
+    register,
     handleSubmit,
     control,
     formState: { errors, isValid, isSubmitting },
@@ -169,33 +172,35 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
         <div className={styles.message}>{t('description.single_sign_on_enabled')}</div>
       )}
 
-      {!showSingleSignOnForm && (
-        // <PasswordInputField
-        //   className={styles.inputField}
-        //   autoComplete="current-password"
-        //   label={t('input.password')}
-        //   isDanger={!!errors.password}
-        //   errorMessage={errors.password?.message}
-        //   autoFocus={autoFocus && isIdentifierDisabled}
-        //   {...register('password', { required: t('error.password_required') })}
-        // />
-        <Controller
-          control={control}
-          name="password"
-          rules={{ required: t('error.password_required') }}
-          render={({ field }) => (
-            <PinPasswordInput
-              className={styles.inputField}
-              name="password"
-              value={field.value}
-              errorMessage={errors.password?.message}
-              autoFocus={autoFocus && isIdentifierDisabled}
-              onChange={field.onChange}
-              onBlur={field.onBlur}
-            />
-          )}
-        />
-      )}
+      {!showSingleSignOnForm &&
+        (isAdminHost ? (
+          <PasswordInputField
+            className={styles.inputField}
+            autoComplete="current-password"
+            label={t('input.password')}
+            isDanger={!!errors.password}
+            errorMessage={errors.password?.message}
+            autoFocus={autoFocus && isIdentifierDisabled}
+            {...register('password', { required: t('error.password_required') })}
+          />
+        ) : (
+          <Controller
+            control={control}
+            name="password"
+            rules={{ required: t('error.password_required') }}
+            render={({ field }) => (
+              <PinPasswordInput
+                className={styles.inputField}
+                name="password"
+                value={field.value}
+                errorMessage={errors.password?.message}
+                isAutoFocus={autoFocus && isIdentifierDisabled}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+              />
+            )}
+          />
+        ))}
 
       {errorMessage && <ErrorMessage className={styles.formErrors}>{errorMessage}</ErrorMessage>}
 

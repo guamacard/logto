@@ -36,7 +36,11 @@
 }
 
 .customTitle {
-  font: 600 32px/32px "Manrope", sans-serif;
+  // font: "Manrope";
+  // font-weight: 600;
+  // font-size: 42px;
+  font: var(--font-headline-1);
+  font-size: 42px;
   color: var(--color-type-primary);
   text-align: center;
   line-height: normal;

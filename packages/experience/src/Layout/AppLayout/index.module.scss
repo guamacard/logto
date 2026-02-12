@@ -5,6 +5,7 @@
   position: absolute;
   inset: 0;
   overflow: auto;
+  // border: 1px solid red;
 }
 
 .container {
@@ -41,7 +42,8 @@
 
   .main {
     width: 540px;
-    min-height: 540px;
+    // min-height: 540px;
+    height: 100%;
     position: relative;
     padding: _.unit(6);
     border-radius: 16px;
