@@ -121,7 +121,7 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
         name="identifier"
         rules={{
           validate: ({ type, value }) => {
-            // console.log('test2', type, value);
+            console.log('test2', type, value);
 
             if (!type || !value) {
               return getGeneralIdentifierErrorMessage(signInMethods, 'required');
