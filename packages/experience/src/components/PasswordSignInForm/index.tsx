@@ -70,9 +70,11 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
 
   const onSubmitHandler = useCallback(
     async (event?: React.FormEvent<HTMLFormElement>) => {
+      console.log('submit', watch('identifier'), watch('password'));
       clearErrorMessage();
 
       await handleSubmit(async ({ identifier: { type, value }, password }) => {
+        console.log('submit', type, value, password);
         if (!type) {
           return;
         }
@@ -80,12 +82,14 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
         setIdentifierInputValue({ type, value });
 
         if (showSingleSignOnForm) {
+          console.log('navigateToSingleSignOn');
           await navigateToSingleSignOn();
           return;
         }
 
         // Check if the user has agreed to the terms and privacy policy before signing in when the policy is set to `Manual`
         if (agreeToTermsPolicy === AgreeToTermsPolicy.Manual && !(await termsValidation())) {
+          console.log('termsValidation', false);
           return;
         }
 
@@ -93,6 +97,7 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
           identifier: { type, value },
           password,
         });
+        console.log('onSubmit', true);
       })(event);
     },
     [
@@ -129,11 +134,11 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
             return errorMessage ? getGeneralIdentifierErrorMessage(signInMethods, 'invalid') : true;
           },
         }}
-        render={({ field, formState: { defaultValues } }) => (
-          <>
+        render={({ field, formState: { defaultValues } }) => {
+          return isAdminHost ? (
             <SmartInputField
               autoFocus={autoFocus && !isIdentifierDisabled}
-              className={styles.customInputFieldHidden}
+              className={styles.inputField}
               {...field}
               isDanger={!!errors.identifier}
               errorMessage={errors.identifier?.message}
@@ -141,6 +146,7 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
               defaultValue={defaultValues?.identifier?.value}
               disabled={isIdentifierDisabled}
             />
+          ) : (
             <div className={styles.dummyCustomInputField}>
               <p>
                 {defaultValues?.identifier?.value && defaultValues.identifier.value.length > 0
@@ -165,12 +171,18 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
                 />
               </svg>
             </div>
-          </>
-        )}
+          );
+        }}
       />
       {showSingleSignOnForm && (
         <div className={styles.message}>{t('description.single_sign_on_enabled')}</div>
       )}
+
+      <div
+        style={{
+          height: '12px',
+        }}
+      />
 
       {!showSingleSignOnForm &&
         (isAdminHost ? (
