@@ -1,4 +1,4 @@
-import { AgreeToTermsPolicy, type SignInIdentifier } from '@logto/schemas';
+import { AgreeToTermsPolicy, SignInIdentifier } from '@logto/schemas';
 import classNames from 'classnames';
 import { useCallback, useContext, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
@@ -37,11 +37,10 @@ export type FormState = {
 };
 
 const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
-  // console.log(signInMethods);
   const { t } = useTranslation();
 
   const { errorMessage, clearErrorMessage, onSubmit } = usePasswordSignIn();
-  // Const { isForgotPasswordEnabled } = useForgotPasswordSettings();
+  // const { isForgotPasswordEnabled } = useForgotPasswordSettings();
   const { termsValidation, agreeToTermsPolicy } = useTerms();
   const { setIdentifierInputValue } = useContext(UserInteractionContext);
   const prefilledIdentifier = usePrefilledIdentifier({ enabledIdentifiers: signInMethods });
@@ -72,11 +71,9 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
 
   const onSubmitHandler = useCallback(
     async (event?: React.FormEvent<HTMLFormElement>) => {
-      console.log('submit', watch('identifier'), watch('password'));
       clearErrorMessage();
 
       await handleSubmit(async ({ identifier: { type, value }, password }) => {
-        console.log('submit', type, value, password);
         if (!type) {
           return;
         }
@@ -84,14 +81,12 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
         setIdentifierInputValue({ type, value });
 
         if (showSingleSignOnForm) {
-          console.log('navigateToSingleSignOn');
           await navigateToSingleSignOn();
           return;
         }
 
         // Check if the user has agreed to the terms and privacy policy before signing in when the policy is set to `Manual`
         if (agreeToTermsPolicy === AgreeToTermsPolicy.Manual && !(await termsValidation())) {
-          console.log('termsValidation', false);
           return;
         }
 
@@ -99,7 +94,6 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
           identifier: { type, value },
           password,
         });
-        console.log('onSubmit', true);
       })(event);
     },
     [
@@ -127,6 +121,8 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
         name="identifier"
         rules={{
           validate: ({ type, value }) => {
+            // console.log('test2', type, value);
+
             if (!type || !value) {
               return getGeneralIdentifierErrorMessage(signInMethods, 'required');
             }
@@ -146,7 +142,6 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
               errorMessage={errors.identifier?.message}
               enabledTypes={signInMethods}
               defaultValue={defaultValues?.identifier?.value}
-              // disabled={isIdentifierDisabled}
             />
           ) : (
             <div className={styles.dummyCustomInputField}>
@@ -175,17 +170,81 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
             </div>
           );
         }}
+        // render={({ field, formState: { defaultValues } }) => {
+        //   return (
+        //     <>
+        //       <SmartInputField
+        //         autoFocus={autoFocus && !isIdentifierDisabled}
+        //         className={styles.inputField}
+        //         {...field}
+        //         isDanger={!!errors.identifier}
+        //         errorMessage={errors.identifier?.message}
+        //         enabledTypes={signInMethods}
+        //         defaultValue={defaultValues?.identifier?.value}
+        //         // disabled={isIdentifierDisabled}
+        //       />
+        //       <div className={styles.dummyCustomInputField}>
+        //         <p>
+        //           {defaultValues?.identifier?.value && defaultValues.identifier.value.length > 0
+        //             ? defaultValues.identifier.value
+        //             : '--- ---'}
+        //         </p>
+        //         <svg
+        //           width="28"
+        //           height="28"
+        //           viewBox="0 0 28 28"
+        //           fill="none"
+        //           xmlns="http://www.w3.org/2000/svg"
+        //         >
+        //           <circle cx="14" cy="14" r="14" fill="white" />
+        //           <circle cx="14" cy="14" r="10.5" fill="#FF8473" />
+        //           <path
+        //             d="M10 13.8L12.8 16.6L18.4 11"
+        //             stroke="white"
+        //             strokeWidth="3"
+        //             strokeLinecap="round"
+        //             strokeLinejoin="round"
+        //           />
+        //         </svg>
+        //       </div>
+        //     </>
+        //   );
+        // }}
       />
+
       {showSingleSignOnForm && (
         <div className={styles.message}>{t('description.single_sign_on_enabled')}</div>
       )}
 
-      <div
-        style={{
-          height: '12px',
-        }}
+      {/* ORIGINAL SECTION */}
+      {/* <PasswordInputField
+        className={styles.inputField}
+        autoComplete="current-password"
+        label={t('input.password')}
+        isDanger={!!errors.password}
+        errorMessage={errors.password?.message}
+        autoFocus={autoFocus && isIdentifierDisabled}
+        {...register('password', { required: t('error.password_required') })}
       />
+      <Controller
+        control={control}
+        name="password"
+        rules={{ required: t('error.password_required') }}
+        render={({ field }) => (
+          <PinPasswordInput
+            ref={field.ref}
+            className={styles.inputField}
+            name="password"
+            value={field.value}
+            errorMessage={errors.password?.message}
+            isAutoFocus={autoFocus && isIdentifierDisabled}
+            onChange={field.onChange}
+            onBlur={field.onBlur}
+          />
+        )}
+      /> */}
 
+      {/* CUSTOM SECTION */}
       {!showSingleSignOnForm &&
         (isAdminHost ? (
           <PasswordInputField
@@ -223,7 +282,13 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
       <div className={styles.customForgotPassword}>
         <ForgotPasswordLink
           className={styles.link}
-          identifier={watch('identifier').type}
+          identifier={
+            watch('identifier').type === SignInIdentifier.Email
+              ? SignInIdentifier.Email
+              : watch('identifier').type === SignInIdentifier.Phone
+                ? SignInIdentifier.Phone
+                : undefined
+          }
           value={watch('identifier').value}
         />
       </div>
@@ -270,7 +335,9 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
           type="checkbox"
           name="remember"
           value="true"
-          onChange={() => setIsAdminHost(!isAdminHost)}
+          onChange={() => {
+            setIsAdminHost(!isAdminHost);
+          }}
         />
       </div>
 
