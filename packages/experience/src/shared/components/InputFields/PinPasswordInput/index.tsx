@@ -213,6 +213,13 @@ const PinPasswordInput = (
     [codes, onChange]
   );
 
+  // Debug: Log error message to console
+  useEffect(() => {
+    if (errorMessage) {
+      console.log('PinPasswordInput errorMessage:', errorMessage);
+    }
+  }, [errorMessage]);
+
   return (
     <div className={className}>
       {/* Hidden input for react-hook-form compatibility */}
