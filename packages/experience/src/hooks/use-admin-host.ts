@@ -14,9 +14,9 @@ const useAdminHost = () => {
     return hostname === 'auth-admin.guamainternal.com';
   }, []);
 
-  const [isAdminHost, setIsAdminHost] = useState(_isAdminHost);
+  const [isAdminHost, setIsAdminHost] = useState(true);
 
-  return {isAdminHost, setIsAdminHost};
+  return { isAdminHost, setIsAdminHost };
 };
 
 export default useAdminHost;

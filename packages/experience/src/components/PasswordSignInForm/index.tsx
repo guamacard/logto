@@ -121,7 +121,7 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
         name="identifier"
         rules={{
           validate: ({ type, value }) => {
-            // console.log('test2', type, value);
+            console.log('test2', type, value);
 
             if (!type || !value) {
               return getGeneralIdentifierErrorMessage(signInMethods, 'required');
@@ -132,84 +132,84 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
             return errorMessage ? getGeneralIdentifierErrorMessage(signInMethods, 'invalid') : true;
           },
         }}
-        render={({ field, formState: { defaultValues } }) => {
-          return isAdminHost ? (
-            <SmartInputField
-              autoFocus={autoFocus && !isIdentifierDisabled}
-              className={styles.inputField}
-              {...field}
-              isDanger={!!errors.identifier}
-              errorMessage={errors.identifier?.message}
-              enabledTypes={signInMethods}
-              defaultValue={defaultValues?.identifier?.value}
-            />
-          ) : (
-            <div className={styles.dummyCustomInputField}>
-              <p>
-                {defaultValues?.identifier?.value && defaultValues.identifier.value.length > 0
-                  ? defaultValues.identifier.value
-                  : '--- ---'}
-              </p>
-              <svg
-                width="28"
-                height="28"
-                viewBox="0 0 28 28"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <circle cx="14" cy="14" r="14" fill="white" />
-                <circle cx="14" cy="14" r="10.5" fill="#FF8473" />
-                <path
-                  d="M10 13.8L12.8 16.6L18.4 11"
-                  stroke="white"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-          );
-        }}
         // render={({ field, formState: { defaultValues } }) => {
-        //   return (
-        //     <>
-        //       <SmartInputField
-        //         autoFocus={autoFocus && !isIdentifierDisabled}
-        //         className={styles.inputField}
-        //         {...field}
-        //         isDanger={!!errors.identifier}
-        //         errorMessage={errors.identifier?.message}
-        //         enabledTypes={signInMethods}
-        //         defaultValue={defaultValues?.identifier?.value}
-        //         // disabled={isIdentifierDisabled}
-        //       />
-        //       <div className={styles.dummyCustomInputField}>
-        //         <p>
-        //           {defaultValues?.identifier?.value && defaultValues.identifier.value.length > 0
-        //             ? defaultValues.identifier.value
-        //             : '--- ---'}
-        //         </p>
-        //         <svg
-        //           width="28"
-        //           height="28"
-        //           viewBox="0 0 28 28"
-        //           fill="none"
-        //           xmlns="http://www.w3.org/2000/svg"
-        //         >
-        //           <circle cx="14" cy="14" r="14" fill="white" />
-        //           <circle cx="14" cy="14" r="10.5" fill="#FF8473" />
-        //           <path
-        //             d="M10 13.8L12.8 16.6L18.4 11"
-        //             stroke="white"
-        //             strokeWidth="3"
-        //             strokeLinecap="round"
-        //             strokeLinejoin="round"
-        //           />
-        //         </svg>
-        //       </div>
-        //     </>
+        //   return isAdminHost ? (
+        //     <SmartInputField
+        //       autoFocus={autoFocus && !isIdentifierDisabled}
+        //       className={styles.inputField}
+        //       {...field}
+        //       isDanger={!!errors.identifier}
+        //       errorMessage={errors.identifier?.message}
+        //       enabledTypes={signInMethods}
+        //       defaultValue={defaultValues?.identifier?.value}
+        //     />
+        //   ) : (
+        //     <div className={styles.dummyCustomInputField}>
+        //       <p>
+        //         {defaultValues?.identifier?.value && defaultValues.identifier.value.length > 0
+        //           ? defaultValues.identifier.value
+        //           : '--- ---'}
+        //       </p>
+        //       <svg
+        //         width="28"
+        //         height="28"
+        //         viewBox="0 0 28 28"
+        //         fill="none"
+        //         xmlns="http://www.w3.org/2000/svg"
+        //       >
+        //         <circle cx="14" cy="14" r="14" fill="white" />
+        //         <circle cx="14" cy="14" r="10.5" fill="#FF8473" />
+        //         <path
+        //           d="M10 13.8L12.8 16.6L18.4 11"
+        //           stroke="white"
+        //           strokeWidth="3"
+        //           strokeLinecap="round"
+        //           strokeLinejoin="round"
+        //         />
+        //       </svg>
+        //     </div>
         //   );
         // }}
+        render={({ field, formState: { defaultValues } }) => {
+          return (
+            <>
+              <SmartInputField
+                autoFocus={autoFocus && !isIdentifierDisabled}
+                className={styles.inputField}
+                {...field}
+                isDanger={!!errors.identifier}
+                errorMessage={errors.identifier?.message}
+                enabledTypes={signInMethods}
+                defaultValue={defaultValues?.identifier?.value}
+                // disabled={isIdentifierDisabled}
+              />
+              <div className={styles.dummyCustomInputField}>
+                <p>
+                  {defaultValues?.identifier?.value && defaultValues.identifier.value.length > 0
+                    ? defaultValues.identifier.value
+                    : '--- ---'}
+                </p>
+                <svg
+                  width="28"
+                  height="28"
+                  viewBox="0 0 28 28"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="14" cy="14" r="14" fill="white" />
+                  <circle cx="14" cy="14" r="10.5" fill="#FF8473" />
+                  <path
+                    d="M10 13.8L12.8 16.6L18.4 11"
+                    stroke="white"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+            </>
+          );
+        }}
       />
 
       {showSingleSignOnForm && (
@@ -217,7 +217,7 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
       )}
 
       {/* ORIGINAL SECTION */}
-      {/* <PasswordInputField
+      <PasswordInputField
         className={styles.inputField}
         autoComplete="current-password"
         label={t('input.password')}
@@ -242,10 +242,10 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
             onBlur={field.onBlur}
           />
         )}
-      /> */}
+      />
 
       {/* CUSTOM SECTION */}
-      {!showSingleSignOnForm &&
+      {/* {!showSingleSignOnForm &&
         (isAdminHost ? (
           <PasswordInputField
             className={styles.inputField}
@@ -274,7 +274,7 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
               />
             )}
           />
-        ))}
+        ))} */}
 
       {errorMessage && <ErrorMessage className={styles.formErrors}>{errorMessage}</ErrorMessage>}
 
