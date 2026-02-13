@@ -18,9 +18,9 @@ const ForgotPassword = () => {
     isForgotPassword: true,
   });
 
-  // if (!isForgotPasswordEnabled) {
-  //   return <ErrorPage />;
-  // }
+  if (!isForgotPasswordEnabled) {
+    return <ErrorPage />;
+  }
 
   return (
     <SecondaryPageLayout
