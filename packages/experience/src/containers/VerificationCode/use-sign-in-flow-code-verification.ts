@@ -123,11 +123,16 @@ const useSignInFlowCodeVerification = (
         return;
       }
 
+      console.log('result', result);
+
       if (result?.redirectTo) {
+        console.log('redirectTo', result.redirectTo);
+        console.log('isAppChannel', isAppChannel);
         // If user comes from the app (WebView), redirect to app-specific callback
         if (isAppChannel) {
           // Clear the login hint after using it
           clearLoginHint();
+          console.log('🔄 Redirecting to app callback for sign-in flow...');
           await redirectTo('com.guama.app://callback?event=sign-out');
         } else {
           await redirectTo(result.redirectTo);
