@@ -13,6 +13,7 @@ import usePasswordPolicyChecker from '@/hooks/use-password-policy-checker';
 import usePasswordRejectionErrorHandler from '@/hooks/use-password-rejection-handler';
 import { usePasswordPolicy } from '@/hooks/use-sie';
 import useToast from '@/hooks/use-toast';
+import useGuamaChannel from '@/hooks/use-guama-channel';
 
 const ResetPassword = () => {
   const [errorMessage, setErrorMessage] = useState<string>();
@@ -28,6 +29,7 @@ const ResetPassword = () => {
   const checkPassword = usePasswordPolicyChecker({ setErrorMessage });
   const asyncResetPassword = useApi(resetPassword);
   const handleError = useErrorHandler();
+  const { isAppChannel, clearLoginHint } = useGuamaChannel();
 
   const passwordRejectionErrorHandler = usePasswordRejectionErrorHandler({ setErrorMessage });
 
@@ -63,7 +65,13 @@ const ResetPassword = () => {
       // Clear the forgot password identifier input value
       setForgotPasswordIdentifierInputValue(undefined);
       setToast(t('description.password_changed'));
-      navigate('/sign-in', { replace: true });
+
+      if (isAppChannel) {
+        clearLoginHint();
+        navigate('com.guama.app://callback?event=sign-out', { replace: true });
+      } else {
+        navigate('/sign-in', { replace: true });
+      }
     },
     [
       asyncResetPassword,

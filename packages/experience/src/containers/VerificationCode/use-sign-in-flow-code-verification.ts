@@ -12,7 +12,6 @@ import { useConfirmModal } from '@/hooks/use-confirm-modal';
 import type { ErrorHandlers } from '@/hooks/use-error-handler';
 import useErrorHandler from '@/hooks/use-error-handler';
 import useGlobalRedirectTo from '@/hooks/use-global-redirect-to';
-import useGuamaChannel from '@/hooks/use-guama-channel';
 import useNavigateWithPreservedSearchParams from '@/hooks/use-navigate-with-preserved-search-params';
 import { useSieMethods } from '@/hooks/use-sie';
 import useSubmitInteractionErrorHandler from '@/hooks/use-submit-interaction-error-handler';
@@ -30,7 +29,6 @@ const useSignInFlowCodeVerification = (
   const { show } = useConfirmModal();
   const navigate = useNavigateWithPreservedSearchParams();
   const redirectTo = useGlobalRedirectTo();
-  const { isAppChannel, clearLoginHint } = useGuamaChannel();
   const { isVerificationCodeEnabledForSignUp } = useSieMethods();
   const handleError = useErrorHandler();
   const registerWithIdentifierAsync = useApi(registerWithVerifiedIdentifier);
@@ -123,29 +121,15 @@ const useSignInFlowCodeVerification = (
         return;
       }
 
-      console.log('result', result);
-
       if (result?.redirectTo) {
-        console.log('redirectTo', result.redirectTo);
-        console.log('isAppChannel', isAppChannel);
-        // If user comes from the app (WebView), redirect to app-specific callback
-        if (isAppChannel) {
-          // Clear the login hint after using it
-          clearLoginHint();
-          console.log('🔄 Redirecting to app callback for sign-in flow...');
-          await redirectTo('com.guama.app://callback?event=sign-out');
-        } else {
-          await redirectTo(result.redirectTo);
-        }
+        await redirectTo(result.redirectTo);
       }
     },
     [
       asyncSignInWithVerificationCodeIdentifier,
-      clearLoginHint,
       errorHandlers,
       handleError,
       identifier,
-      isAppChannel,
       redirectTo,
       verificationId,
     ]
