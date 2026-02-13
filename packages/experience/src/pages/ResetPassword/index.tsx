@@ -14,6 +14,7 @@ import usePasswordRejectionErrorHandler from '@/hooks/use-password-rejection-han
 import { usePasswordPolicy } from '@/hooks/use-sie';
 import useToast from '@/hooks/use-toast';
 import useGuamaChannel from '@/hooks/use-guama-channel';
+import useGlobalRedirectTo from '@/hooks/use-global-redirect-to';
 
 const ResetPassword = () => {
   const [errorMessage, setErrorMessage] = useState<string>();
@@ -23,6 +24,7 @@ const ResetPassword = () => {
   const { t } = useTranslation();
   const { setToast } = useToast();
   const navigate = useNavigateWithPreservedSearchParams();
+  const redirectTo = useGlobalRedirectTo();
   const { show } = usePromiseConfirmModal();
   const { setForgotPasswordIdentifierInputValue } = useContext(UserInteractionContext);
 
@@ -68,7 +70,8 @@ const ResetPassword = () => {
 
       if (isAppChannel) {
         clearLoginHint();
-        navigate('com.guama.app://callback?event=sign-out', { replace: true });
+        // navigate('com.guama.app://callback?event=sign-out', { replace: true });
+        await redirectTo(new URL('com.guama.app://callback?event=sign-out'));
       } else {
         navigate('/sign-in', { replace: true });
       }
