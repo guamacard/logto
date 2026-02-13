@@ -37,6 +37,17 @@
     display: none;
   }
 
+  .hiddenInputField {
+    position: absolute;
+    visibility: hidden;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .identifierFieldWrapper {
+    position: relative;
+  }
+
   .dummyCustomInputField {
     display: flex;
     align-items: center;

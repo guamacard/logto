@@ -12,6 +12,7 @@ import { useConfirmModal } from '@/hooks/use-confirm-modal';
 import type { ErrorHandlers } from '@/hooks/use-error-handler';
 import useErrorHandler from '@/hooks/use-error-handler';
 import useGlobalRedirectTo from '@/hooks/use-global-redirect-to';
+import useGuamaChannel from '@/hooks/use-guama-channel';
 import useNavigateWithPreservedSearchParams from '@/hooks/use-navigate-with-preserved-search-params';
 import { useSieMethods } from '@/hooks/use-sie';
 import useSubmitInteractionErrorHandler from '@/hooks/use-submit-interaction-error-handler';
@@ -29,6 +30,7 @@ const useSignInFlowCodeVerification = (
   const { show } = useConfirmModal();
   const navigate = useNavigateWithPreservedSearchParams();
   const redirectTo = useGlobalRedirectTo();
+  const { isAppChannel, clearChannel } = useGuamaChannel();
   const { isVerificationCodeEnabledForSignUp } = useSieMethods();
   const handleError = useErrorHandler();
   const registerWithIdentifierAsync = useApi(registerWithVerifiedIdentifier);
@@ -122,14 +124,23 @@ const useSignInFlowCodeVerification = (
       }
 
       if (result?.redirectTo) {
-        await redirectTo(result.redirectTo);
+        // If user comes from the app (WebView), redirect to app-specific callback
+        if (isAppChannel) {
+          // Clear the channel flag after using it
+          clearChannel();
+          await redirectTo('com.guama.app://callback?event=sign-out');
+        } else {
+          await redirectTo(result.redirectTo);
+        }
       }
     },
     [
       asyncSignInWithVerificationCodeIdentifier,
+      clearChannel,
       errorHandlers,
       handleError,
       identifier,
+      isAppChannel,
       redirectTo,
       verificationId,
     ]

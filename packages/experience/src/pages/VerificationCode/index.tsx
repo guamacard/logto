@@ -7,6 +7,7 @@ import { validate } from 'superstruct';
 import SecondaryPageLayout from '@/Layout/SecondaryPageLayout';
 import UserInteractionContext from '@/Providers/UserInteractionContextProvider/UserInteractionContext';
 import VerificationCodeContainer from '@/containers/VerificationCode';
+import useGuamaChannel from '@/hooks/use-guama-channel';
 import { useSieMethods } from '@/hooks/use-sie';
 import ErrorPage from '@/pages/ErrorPage';
 import { type IdentifierInputValue } from '@/shared/components/InputFields/SmartInputField';
@@ -31,6 +32,9 @@ const isValidVerificationCodeIdentifier = (
 const VerificationCode = () => {
   const { flow } = useParams<Parameters>();
   const { signInMethods } = useSieMethods();
+
+  // Save guama_chanel flag from URL to localStorage
+  useGuamaChannel();
 
   const { identifierInputValue, forgotPasswordIdentifierInputValue, verificationIdsMap } =
     useContext(UserInteractionContext);
