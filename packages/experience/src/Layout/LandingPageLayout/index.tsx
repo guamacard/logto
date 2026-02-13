@@ -46,9 +46,9 @@ const LandingPageLayout = ({ children, title, titleInterpolation, thirdPartyBran
           getBrandingLogoUrl({ theme, branding: thirdPartyBranding, isDarkModeEnabled })
         }
       /> */}
-      <p className={styles.customTitle}>
+      <h1 className={styles.customTitle}>
         Ingresa tu <br /> contraseña
-      </p>
+      </h1>
       {children}
     </FirstScreenLayout>
   );

@@ -3,8 +3,8 @@ import { type ReactElement } from 'react';
 
 import useNavigateWithPreservedSearchParams from '@/hooks/use-navigate-with-preserved-search-params';
 import usePlatform from '@/hooks/use-platform';
-import DynamicT from '@/shared/components/DynamicT';
-import NavBar from '@/shared/components/NavBar';
+// import DynamicT from '@/shared/components/DynamicT';
+// import NavBar from '@/shared/components/NavBar';
 import PageMeta from '@/shared/components/PageMeta';
 
 import { InlineNotification } from '../../components/Notification';
@@ -38,25 +38,32 @@ const SecondaryPageLayout = ({
   return (
     <div className={styles.wrapper}>
       <PageMeta titleKey={title} />
-      <NavBar
+      {/* <NavBar
         isHidden={isNavBarHidden}
         onSkip={onSkip}
         onBack={() => {
           navigate(-1);
         }}
-      />
+      /> */}
       {isMobile && notification && (
         <InlineNotification message={notification} className={styles.notification} />
       )}
       <div className={styles.container}>
         <div className={styles.header}>
           <div className={styles.title}>
-            <DynamicT forKey={title} interpolation={titleProps} />
+            {/* <DynamicT forKey={title} interpolation={titleProps} /> */}
+            <h1 className={styles.customTitle}>
+              Código de <br /> verificación
+            </h1>
           </div>
           {description && (
             <div className={styles.description}>
               {typeof description === 'string' ? (
-                <DynamicT forKey={description} interpolation={descriptionProps} />
+                // <DynamicT forKey={description} interpolation={descriptionProps} />
+                <p className={styles.customDescription}>
+                  Ingresa el código que enviamos a <br />{' '}
+                  <span>{descriptionProps?.target ?? 'tu correo electrónico'}</span>
+                </p>
               ) : (
                 description
               )}
