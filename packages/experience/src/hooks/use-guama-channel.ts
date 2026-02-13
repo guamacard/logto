@@ -1,50 +1,53 @@
+import { ExtraParamsKey } from '@logto/schemas';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-const GUAMA_CHANNEL_KEY = 'guama_channel';
-const GUAMA_CHANNEL_PARAM = 'guama_chanel'; // Note: keeping the typo from the URL parameter
+const GUAMA_LOGIN_HINT_KEY = 'guama_login_hint';
 
 /**
- * Hook to detect and persist the guama_chanel URL parameter
+ * Hook to detect if the user is coming from the Guama app (WebView)
+ *
+ * Strategy: If login_hint parameter exists in the URL, it means the user is coming from the app.
+ * The app always sends login_hint, while web users don't.
  *
  * Usage:
- * - Detects if URL has `guama_chanel=app` parameter
- * - Saves the flag to localStorage when detected
- * - Returns the current channel value from localStorage
+ * - Detects if URL has `login_hint` parameter (email)
+ * - Saves the login_hint to sessionStorage when detected
+ * - Returns isAppChannel (true if login_hint exists) and the loginHint value
  * - Provides a method to clear the stored value
  *
- * @returns {Object} - { isAppChannel: boolean, channel: string | null, clearChannel: () => void }
+ * @returns {Object} - { isAppChannel: boolean, loginHint: string | null, clearLoginHint: () => void }
  */
 const useGuamaChannel = () => {
   const [searchParams] = useSearchParams();
-  const [channel, setChannel] = useState<string | null>(() => {
-    // Initialize from localStorage
-    return localStorage.getItem(GUAMA_CHANNEL_KEY);
+  const [loginHint, setLoginHint] = useState<string | null>(() => {
+    // Initialize from sessionStorage
+    return sessionStorage.getItem(GUAMA_LOGIN_HINT_KEY);
   });
 
   useEffect(() => {
-    // Check if the URL has the guama_chanel parameter
-    const channelParam = searchParams.get(GUAMA_CHANNEL_PARAM);
+    // Check if the URL has the login_hint parameter
+    const loginHintParam = searchParams.get(ExtraParamsKey.LoginHint);
 
-    if (channelParam) {
-      // Save to localStorage
-      localStorage.setItem(GUAMA_CHANNEL_KEY, channelParam);
-      setChannel(channelParam);
+    if (loginHintParam) {
+      // Save to sessionStorage
+      sessionStorage.setItem(GUAMA_LOGIN_HINT_KEY, loginHintParam);
+      setLoginHint(loginHintParam);
     }
   }, [searchParams]);
 
-  const clearChannel = () => {
-    localStorage.removeItem(GUAMA_CHANNEL_KEY);
-    setChannel(null);
+  const clearLoginHint = () => {
+    sessionStorage.removeItem(GUAMA_LOGIN_HINT_KEY);
+    setLoginHint(null);
   };
 
   return {
-    /** Whether the channel is 'app' */
-    isAppChannel: channel === 'app',
-    /** The current channel value (e.g., 'app') or null */
-    channel,
-    /** Clear the stored channel value */
-    clearChannel,
+    /** Whether the user is coming from the app (true if login_hint exists) */
+    isAppChannel: Boolean(loginHint),
+    /** The login hint (email) from URL parameter or null */
+    loginHint,
+    /** Clear the stored login hint value */
+    clearLoginHint,
   };
 };
 

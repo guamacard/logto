@@ -30,7 +30,7 @@ const useSignInFlowCodeVerification = (
   const { show } = useConfirmModal();
   const navigate = useNavigateWithPreservedSearchParams();
   const redirectTo = useGlobalRedirectTo();
-  const { isAppChannel, clearChannel } = useGuamaChannel();
+  const { isAppChannel, clearLoginHint } = useGuamaChannel();
   const { isVerificationCodeEnabledForSignUp } = useSieMethods();
   const handleError = useErrorHandler();
   const registerWithIdentifierAsync = useApi(registerWithVerifiedIdentifier);
@@ -126,8 +126,8 @@ const useSignInFlowCodeVerification = (
       if (result?.redirectTo) {
         // If user comes from the app (WebView), redirect to app-specific callback
         if (isAppChannel) {
-          // Clear the channel flag after using it
-          clearChannel();
+          // Clear the login hint after using it
+          clearLoginHint();
           await redirectTo('com.guama.app://callback?event=sign-out');
         } else {
           await redirectTo(result.redirectTo);
@@ -136,7 +136,7 @@ const useSignInFlowCodeVerification = (
     },
     [
       asyncSignInWithVerificationCodeIdentifier,
-      clearChannel,
+      clearLoginHint,
       errorHandlers,
       handleError,
       identifier,
