@@ -3,20 +3,26 @@
 .passcode {
   @include _.flex-row;
   justify-content: space-between;
+  gap: _.unit(2);
+  width: 100%;
+  overflow: hidden;
 
   input {
-    width: 44px;
-    height: 44px;
-    border-radius: _.unit(2);
-    border: _.border(var(--color-line-border));
+    flex: 1;
+    height: 48px;
+    width: 15%;
+    border: none;
+    border-bottom: 2px solid var(--color-line-border);
     background: transparent;
     text-align: center;
     font: var(--font-label-1);
-    color: var(--color-type-primary);
-    caret-color: var(--color-brand-default);
+    color: #00002F;
+    caret-color: #00002F;
+    transition: border-color 0.2s ease;
+    font-size: 16px;
 
     &:focus {
-      border: _.border(var(--color-brand-default));
+      border-bottom-color: #00002F;
       outline: none;
     }
 
@@ -26,20 +32,16 @@
   }
 }
 
-.passcode + .errorMessage {
+.errorMessage {
   margin-inline-start: _.unit(0.5);
-  margin-top: _.unit(1);
+  margin-top: _.unit(2);
 }
 
 :global(body.desktop) {
   .passcode {
     input {
-      font: var(--font-body-2);
-      outline: 3px solid transparent;
-
       &:focus {
-        border: _.border(var(--color-brand-default));
-        outline-color: var(--color-overlay-brand-focused);
+        border-bottom-color: #00002F;
       }
     }
   }
