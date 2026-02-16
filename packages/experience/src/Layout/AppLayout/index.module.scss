@@ -20,6 +20,8 @@
 :global(body.mobile) {
   .container {
     padding-bottom: env(safe-area-inset-bottom);
+    // Change alignment to flex-start to allow content to position naturally
+    justify-content: flex-start;
   }
 
   .main {
@@ -28,6 +30,9 @@
     padding: 0 _.unit(5);
     position: relative;
     background: var(--color-bg-body);
+    // Use flexbox to control internal layout
+    display: flex;
+    flex-direction: column;
   }
 
   .signature {
