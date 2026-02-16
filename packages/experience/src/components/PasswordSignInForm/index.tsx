@@ -119,114 +119,115 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
 
   return (
     <form className={classNames(styles.form, className)} onSubmit={onSubmitHandler}>
-      <Controller
-        control={control}
-        name="identifier"
-        rules={{
-          validate: ({ type, value }) => {
-            console.log('test2', type, value);
+      <div>
+        <Controller
+          control={control}
+          name="identifier"
+          rules={{
+            validate: ({ type, value }) => {
+              if (!type || !value) {
+                return getGeneralIdentifierErrorMessage(signInMethods, 'required');
+              }
 
-            if (!type || !value) {
-              return getGeneralIdentifierErrorMessage(signInMethods, 'required');
-            }
+              const errorMessage = validateIdentifierField(type, value);
 
-            const errorMessage = validateIdentifierField(type, value);
+              return errorMessage
+                ? getGeneralIdentifierErrorMessage(signInMethods, 'invalid')
+                : true;
+            },
+          }}
+          render={({ field, formState: { defaultValues } }) => {
+            return (
+              <div className={styles.identifierFieldWrapper}>
+                {/* Always render SmartInputField so react-hook-form can register it */}
+                <SmartInputField
+                  autoFocus={autoFocus && !isIdentifierDisabled}
+                  className={classNames(styles.inputField, !isAdminHost && styles.hiddenInputField)}
+                  {...field}
+                  isDanger={!!errors.identifier}
+                  errorMessage={errors.identifier?.message}
+                  enabledTypes={signInMethods}
+                  defaultValue={defaultValues?.identifier?.value}
+                />
 
-            return errorMessage ? getGeneralIdentifierErrorMessage(signInMethods, 'invalid') : true;
-          },
-        }}
-        render={({ field, formState: { defaultValues } }) => {
-          return (
-            <div className={styles.identifierFieldWrapper}>
-              {/* Always render SmartInputField so react-hook-form can register it */}
-              <SmartInputField
-                autoFocus={autoFocus && !isIdentifierDisabled}
-                className={classNames(styles.inputField, !isAdminHost && styles.hiddenInputField)}
-                {...field}
-                isDanger={!!errors.identifier}
-                errorMessage={errors.identifier?.message}
-                enabledTypes={signInMethods}
-                defaultValue={defaultValues?.identifier?.value}
-              />
+                {/* Show dummy input when not admin host */}
+                {!isAdminHost && (
+                  <div className={styles.dummyCustomInputField}>
+                    <p>
+                      {field.value.value && field.value.value.length > 0
+                        ? field.value.value
+                        : '--- ---'}
+                    </p>
+                    <svg
+                      width="28"
+                      height="28"
+                      viewBox="0 0 28 28"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle cx="14" cy="14" r="14" fill="white" />
+                      <circle cx="14" cy="14" r="10.5" fill="#FF8473" />
+                      <path
+                        d="M10 13.8L12.8 16.6L18.4 11"
+                        stroke="white"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </div>
+                )}
+              </div>
+            );
+          }}
+          // render={({ field, formState: { defaultValues } }) => {
+          //   return (
+          //     <>
+          //       <SmartInputField
+          //         autoFocus={autoFocus && !isIdentifierDisabled}
+          //         className={styles.inputField}
+          //         {...field}
+          //         isDanger={!!errors.identifier}
+          //         errorMessage={errors.identifier?.message}
+          //         enabledTypes={signInMethods}
+          //         defaultValue={defaultValues?.identifier?.value}
+          //         // disabled={isIdentifierDisabled}
+          //       />
+          //       <div className={styles.dummyCustomInputField}>
+          //         <p>
+          //           {defaultValues?.identifier?.value && defaultValues.identifier.value.length > 0
+          //             ? defaultValues.identifier.value
+          //             : '--- ---'}
+          //         </p>
+          //         <svg
+          //           width="28"
+          //           height="28"
+          //           viewBox="0 0 28 28"
+          //           fill="none"
+          //           xmlns="http://www.w3.org/2000/svg"
+          //         >
+          //           <circle cx="14" cy="14" r="14" fill="white" />
+          //           <circle cx="14" cy="14" r="10.5" fill="#FF8473" />
+          //           <path
+          //             d="M10 13.8L12.8 16.6L18.4 11"
+          //             stroke="white"
+          //             strokeWidth="3"
+          //             strokeLinecap="round"
+          //             strokeLinejoin="round"
+          //           />
+          //         </svg>
+          //       </div>
+          //     </>
+          //   );
+          // }}
+        />
 
-              {/* Show dummy input when not admin host */}
-              {!isAdminHost && (
-                <div className={styles.dummyCustomInputField}>
-                  <p>
-                    {field.value.value && field.value.value.length > 0
-                      ? field.value.value
-                      : '--- ---'}
-                  </p>
-                  <svg
-                    width="28"
-                    height="28"
-                    viewBox="0 0 28 28"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <circle cx="14" cy="14" r="14" fill="white" />
-                    <circle cx="14" cy="14" r="10.5" fill="#FF8473" />
-                    <path
-                      d="M10 13.8L12.8 16.6L18.4 11"
-                      stroke="white"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </div>
-              )}
-            </div>
-          );
-        }}
-        // render={({ field, formState: { defaultValues } }) => {
-        //   return (
-        //     <>
-        //       <SmartInputField
-        //         autoFocus={autoFocus && !isIdentifierDisabled}
-        //         className={styles.inputField}
-        //         {...field}
-        //         isDanger={!!errors.identifier}
-        //         errorMessage={errors.identifier?.message}
-        //         enabledTypes={signInMethods}
-        //         defaultValue={defaultValues?.identifier?.value}
-        //         // disabled={isIdentifierDisabled}
-        //       />
-        //       <div className={styles.dummyCustomInputField}>
-        //         <p>
-        //           {defaultValues?.identifier?.value && defaultValues.identifier.value.length > 0
-        //             ? defaultValues.identifier.value
-        //             : '--- ---'}
-        //         </p>
-        //         <svg
-        //           width="28"
-        //           height="28"
-        //           viewBox="0 0 28 28"
-        //           fill="none"
-        //           xmlns="http://www.w3.org/2000/svg"
-        //         >
-        //           <circle cx="14" cy="14" r="14" fill="white" />
-        //           <circle cx="14" cy="14" r="10.5" fill="#FF8473" />
-        //           <path
-        //             d="M10 13.8L12.8 16.6L18.4 11"
-        //             stroke="white"
-        //             strokeWidth="3"
-        //             strokeLinecap="round"
-        //             strokeLinejoin="round"
-        //           />
-        //         </svg>
-        //       </div>
-        //     </>
-        //   );
-        // }}
-      />
+        {showSingleSignOnForm && (
+          <div className={styles.message}>{t('description.single_sign_on_enabled')}</div>
+        )}
 
-      {showSingleSignOnForm && (
-        <div className={styles.message}>{t('description.single_sign_on_enabled')}</div>
-      )}
-
-      {/* ORIGINAL SECTION */}
-      {/* <PasswordInputField
+        {/* ORIGINAL SECTION */}
+        {/* <PasswordInputField
         className={styles.inputField}
         autoComplete="current-password"
         label={t('input.password')}
@@ -253,93 +254,95 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
         )}
       /> */}
 
-      {/* CUSTOM SECTION */}
-      {!showSingleSignOnForm &&
-        (isAdminHost ? (
-          <PasswordInputField
-            className={styles.inputField}
-            autoComplete="current-password"
-            label={t('input.password')}
-            isDanger={!!errors.password}
-            errorMessage={errors.password?.message}
-            autoFocus={autoFocus && isIdentifierDisabled}
-            {...register('password', { required: t('error.password_required') })}
-          />
-        ) : (
-          <Controller
-            control={control}
-            name="password"
-            rules={{ required: t('error.password_required') }}
-            render={({ field }) => (
-              <PinPasswordInput
-                ref={field.ref}
-                className={styles.inputField}
-                name="password"
-                value={field.value}
-                errorMessage={errors.password?.message}
-                isAutoFocus={autoFocus && isIdentifierDisabled}
-                onChange={field.onChange}
-                onBlur={field.onBlur}
-              />
-            )}
-          />
-        ))}
+        {/* CUSTOM SECTION */}
+        {!showSingleSignOnForm &&
+          (isAdminHost ? (
+            <PasswordInputField
+              className={styles.inputField}
+              autoComplete="current-password"
+              label={t('input.password')}
+              isDanger={!!errors.password}
+              errorMessage={errors.password?.message}
+              autoFocus={autoFocus && isIdentifierDisabled}
+              {...register('password', { required: t('error.password_required') })}
+            />
+          ) : (
+            <Controller
+              control={control}
+              name="password"
+              rules={{ required: t('error.password_required') }}
+              render={({ field }) => (
+                <PinPasswordInput
+                  ref={field.ref}
+                  className={styles.inputField}
+                  name="password"
+                  value={field.value}
+                  errorMessage={errors.password?.message}
+                  isAutoFocus={autoFocus && isIdentifierDisabled}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                />
+              )}
+            />
+          ))}
 
-      {errorMessage && <ErrorMessage className={styles.formErrors}>{errorMessage}</ErrorMessage>}
+        {errorMessage && <ErrorMessage className={styles.formErrors}>{errorMessage}</ErrorMessage>}
 
-      {isForgotPasswordEnabled && !showSingleSignOnForm && (
-        <div className={styles.customForgotPassword}>
-          <CustomForgotPasswordLink
-            className={styles.link}
-            identifier={
-              watch('identifier').type === SignInIdentifier.Email
-                ? SignInIdentifier.Email
-                : watch('identifier').type === SignInIdentifier.Phone
-                  ? SignInIdentifier.Phone
-                  : undefined
-            }
-            value={watch('identifier').value}
-          />
-        </div>
-      )}
-
-      {/**
-       * Have to use css to hide the terms element.
-       * Remove element from dom will trigger a form re-render.
-       * Form rerender will trigger autofill.
-       * If the autofill value is SSO enabled, it will always show SSO form.
-       */}
-      <TermsAndPrivacyCheckbox
-        className={classNames(
-          styles.terms,
-          // For sign in, only show the terms checkbox if the terms policy is manual
-          agreeToTermsPolicy !== AgreeToTermsPolicy.Manual && styles.hidden
+        {isForgotPasswordEnabled && !showSingleSignOnForm && (
+          <div className={styles.customForgotPassword}>
+            <CustomForgotPasswordLink
+              className={styles.link}
+              identifier={
+                watch('identifier').type === SignInIdentifier.Email
+                  ? SignInIdentifier.Email
+                  : watch('identifier').type === SignInIdentifier.Phone
+                    ? SignInIdentifier.Phone
+                    : undefined
+              }
+              value={watch('identifier').value}
+            />
+          </div>
         )}
-      />
 
-      <CaptchaBox />
+        {/**
+         * Have to use css to hide the terms element.
+         * Remove element from dom will trigger a form re-render.
+         * Form rerender will trigger autofill.
+         * If the autofill value is SSO enabled, it will always show SSO form.
+         */}
+        <TermsAndPrivacyCheckbox
+          className={classNames(
+            styles.terms,
+            // For sign in, only show the terms checkbox if the terms policy is manual
+            agreeToTermsPolicy !== AgreeToTermsPolicy.Manual && styles.hidden
+          )}
+        />
 
-      <div
+        <CaptchaBox />
+      </div>
+
+      <div>
+        {/* <div
         style={{
           height: '20px',
         }}
-      />
+      /> */}
 
-      <Button
-        name="submit"
-        title={showSingleSignOnForm ? 'action.single_sign_on' : 'action.sign_in'}
-        icon={showSingleSignOnForm ? <LockIcon /> : undefined}
-        htmlType="submit"
-        isLoading={isSubmitting}
-      />
+        <Button
+          name="submit"
+          title={showSingleSignOnForm ? 'action.single_sign_on' : 'action.sign_in'}
+          icon={showSingleSignOnForm ? <LockIcon /> : undefined}
+          htmlType="submit"
+          isLoading={isSubmitting}
+        />
 
-      <div
+        {/* <div
         style={{
           height: '40px',
         }}
-      />
+      /> */}
 
-      <div>
+        {/* <div>
         <input
           type="checkbox"
           name="remember"
@@ -348,9 +351,10 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
             setIsAdminHost(!isAdminHost);
           }}
         />
-      </div>
+      </div> */}
 
-      <input hidden type="submit" />
+        <input hidden type="submit" />
+      </div>
     </form>
   );
 };
