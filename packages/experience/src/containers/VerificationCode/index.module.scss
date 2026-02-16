@@ -29,6 +29,10 @@
 
   .switch,
   .continueButton {
-    margin-top: _.unit(6);
+    // margin-top: _.unit(6);
+  }
+
+  .resendCodeButton {
+    margin-top: _.unit(3);
   }
 }

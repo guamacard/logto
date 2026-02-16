@@ -8,6 +8,8 @@ import { UserFlow, type VerificationCodeIdentifier } from '@/types';
 
 import styles from './CustomForgotPasswordLink.module.scss';
 
+// import { SignInIdentifier } from '@logto/schemas';
+
 type Props = {
   readonly identifier?: VerificationCodeIdentifier;
   readonly value?: string;
@@ -22,6 +24,7 @@ const CustomForgotPasswordLink = ({ className, ...identifierData }: Props) => {
 
   const handleClick = async () => {
     // Only proceed if we have a valid verification code identifier (email or phone)
+    // BYPASS THIS BLOCK FOR TESTING
     if (!identifierData.identifier || isLoading) {
       return;
     }
@@ -46,6 +49,7 @@ const CustomForgotPasswordLink = ({ className, ...identifierData }: Props) => {
         value: identifierData.value ?? '',
       });
 
+      // BYPASS SETTING SignInIdentifier.Email IN identifier FOR TESTING
       await onSubmit({
         identifier: identifierData.identifier,
         value: identifierData.value ?? '',

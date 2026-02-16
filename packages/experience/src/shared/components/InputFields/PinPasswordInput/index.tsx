@@ -20,6 +20,7 @@ type Props = {
   readonly value?: string;
   readonly errorMessage?: string;
   readonly isAutoFocus?: boolean;
+  readonly showDigits?: boolean; // If true, show digits instead of password dots
   readonly onChange?: (value: string) => void;
   readonly onBlur?: () => void;
 };
@@ -41,7 +42,16 @@ const normalize = (value: string[], length: number): string[] => {
 };
 
 const PinPasswordInput = (
-  { className, name, value = '', errorMessage, isAutoFocus, onChange, onBlur }: Props,
+  {
+    className,
+    name,
+    value = '',
+    errorMessage,
+    isAutoFocus,
+    showDigits = false,
+    onChange,
+    onBlur,
+  }: Props,
   ref: Ref<Nullable<HTMLInputElement>>
 ) => {
   // Hidden input for form compatibility
@@ -236,7 +246,7 @@ const PinPasswordInput = (
         autoComplete="current-password"
       />
 
-      {/* Visual PIN input with password dots */}
+      {/* Visual PIN input - shows digits or password dots based on showDigits prop */}
       <div className={styles.pinContainer}>
         {Array.from({ length: PIN_LENGTH }).map((_, index) => (
           <input
@@ -249,7 +259,7 @@ const PinPasswordInput = (
             name={`${name}_${index}`}
             data-id={index}
             value={codes[index]}
-            type="password"
+            type={showDigits ? 'text' : 'password'}
             inputMode="numeric"
             pattern="[0-9]*"
             autoComplete="off"

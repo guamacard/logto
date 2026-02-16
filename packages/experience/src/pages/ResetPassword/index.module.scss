@@ -1,0 +1,18 @@
+.dummyCustomInputField {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0 20px;
+  color: #c1c4cd;
+  background-color: #f7f9fc;
+  border: 1px solid #c1c4cd;
+  border-radius: 12px;
+  padding: 0 18px;
+  // font-size: 18px;
+  font: 500 18px/24px "Manrope", sans-serif;
+
+  p {
+    margin: 15px 0;
+    min-height: 20px;
+  }
+}
