@@ -17,6 +17,9 @@ const ResetPassword = () => {
   const navigate = useNavigateWithPreservedSearchParams();
   const { loginHint } = useGuamaChannel();
 
+  // Create a local copy of loginHint to display in UI
+  const [displayEmail, setDisplayEmail] = useState(loginHint);
+
   const checkPassword = usePasswordPolicyChecker({ setErrorMessage });
 
   const onSubmitHandler = useCallback(
@@ -49,7 +52,7 @@ const ResetPassword = () => {
       description=""
     >
       <div className={styles.dummyCustomInputField}>
-        <p>{loginHint ?? '--- ---'}</p>
+        <p>{displayEmail ?? '--- ---'}</p>
         <svg
           width="28"
           height="28"

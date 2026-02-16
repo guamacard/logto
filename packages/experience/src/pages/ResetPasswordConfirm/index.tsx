@@ -40,6 +40,10 @@ const ResetPasswordConfirm = () => {
   const handleError = useErrorHandler();
   const { isAppChannel, clearLoginHint, loginHint } = useGuamaChannel();
 
+  // Create a local copy of loginHint to display in UI
+  // This prevents the dummy input from showing "--- ---" when clearLoginHint() is called
+  const [displayEmail, setDisplayEmail] = useState(loginHint);
+
   const passwordRejectionErrorHandler = usePasswordRejectionErrorHandler({ setErrorMessage });
 
   const errorHandlers: ErrorHandlers = useMemo(
@@ -65,7 +69,11 @@ const ResetPasswordConfirm = () => {
       }
 
       if (password !== firstPassword) {
-        setErrorMessage(t('error.passwords_do_not_match'));
+        setErrorMessage('Las contraseñas no coinciden');
+        setTimeout(() => {
+          clearErrorMessage();
+          navigate(-1);
+        }, 1500);
         return;
       }
 
@@ -119,13 +127,13 @@ const ResetPasswordConfirm = () => {
     <SecondaryPageLayout
       title={
         <>
-          Confirma tu contraseña <br /> de 6 dígitos
+          Confirma tu <br /> contraseña
         </>
       }
       description=""
     >
       <div className={styles.dummyCustomInputField}>
-        <p>{loginHint ?? '--- ---'}</p>
+        <p>{displayEmail ?? '--- ---'}</p>
         <svg
           width="28"
           height="28"
