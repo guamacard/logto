@@ -31,6 +31,17 @@ const normalize = (value: string[], length: number): string[] => {
   return value;
 };
 
+const focusWithScrollPrevent = (element: HTMLInputElement | null) => {
+  if (!element) {
+    return;
+  }
+
+  const scrollX = window.scrollX;
+  const scrollY = window.scrollY;
+  element.focus({ preventScroll: true });
+  window.scrollTo(scrollX, scrollY);
+};
+
 const VerificationCode = ({
   name,
   className,
@@ -68,7 +79,7 @@ const VerificationCode = ({
       // Move to the next target
       const nextTarget =
         inputReferences.current[Math.min(targetId + trimmedChars.length, codes.length - 1)];
-      nextTarget?.focus();
+      focusWithScrollPrevent(nextTarget ?? null);
     },
     [codes, onChange]
   );
@@ -147,7 +158,7 @@ const VerificationCode = ({
           }
 
           if (previousTarget) {
-            previousTarget.focus();
+            focusWithScrollPrevent(previousTarget);
             onChange(Object.assign([], codes, { [targetId - 1]: '' }));
           }
 
@@ -156,13 +167,13 @@ const VerificationCode = ({
 
         case 'ArrowLeft': {
           event.preventDefault();
-          previousTarget?.focus();
+          focusWithScrollPrevent(previousTarget ?? null);
           break;
         }
 
         case 'ArrowRight': {
           event.preventDefault();
-          nextTarget?.focus();
+          focusWithScrollPrevent(nextTarget ?? null);
           break;
         }
         case '+':
@@ -183,9 +194,43 @@ const VerificationCode = ({
     [codes, onChange]
   );
 
+  // iOS WebView fix: prevent scroll-into-view when any code input is focused
+  useEffect(() => {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+    if (!isIOS) {
+      return;
+    }
+
+    let scrollPosition = { x: window.scrollX, y: window.scrollY };
+
+    const handleScroll = () => {
+      scrollPosition = { x: window.scrollX, y: window.scrollY };
+    };
+
+    const preventAutoScroll = (event: Event) => {
+      const target = event.target as HTMLElement;
+      const isCodeInput = inputReferences.current.some((input) => input === target);
+
+      if (isCodeInput) {
+        requestAnimationFrame(() => {
+          window.scrollTo(scrollPosition.x, scrollPosition.y);
+        });
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    document.addEventListener('focusin', preventAutoScroll, true);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('focusin', preventAutoScroll, true);
+    };
+  }, []);
+
   useEffect(() => {
     if (value.length === 0) {
-      inputReferences.current[0]?.focus();
+      focusWithScrollPrevent(inputReferences.current[0] ?? null);
     }
   }, [value]);
 
