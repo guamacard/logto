@@ -6,6 +6,10 @@
   gap: _.unit(2);
   width: 100%;
   overflow: hidden;
+  // iOS WebView fix: Prevent container from scrolling when input focuses
+  position: relative;
+  // Ensure the container stays in place
+  transform: translateZ(0);
 
   .pinInput {
     flex: 1;
