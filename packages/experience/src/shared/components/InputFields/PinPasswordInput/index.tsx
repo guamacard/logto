@@ -1,14 +1,6 @@
 import type { Nullable } from '@silverhand/essentials';
 import type { Ref, FormEventHandler, KeyboardEventHandler, ClipboardEventHandler } from 'react';
-import {
-  forwardRef,
-  useImperativeHandle,
-  useState,
-  useEffect,
-  useCallback,
-  useRef,
-  useMemo,
-} from 'react';
+import { forwardRef, useImperativeHandle, useEffect, useCallback, useRef, useMemo } from 'react';
 
 import ErrorMessage from '@/shared/components/ErrorMessage';
 
@@ -58,24 +50,15 @@ const PinPasswordInput = (
   const hiddenInputRef = useRef<HTMLInputElement>(null);
   useImperativeHandle(ref, () => hiddenInputRef.current);
 
-  // Convert string value to array for PIN inputs
-  const [pinValues, setPinValues] = useState<string[]>(() => {
-    return value.split('').slice(0, PIN_LENGTH);
-  });
-
   /* eslint-disable @typescript-eslint/ban-types */
   const inputReferences = useRef<Array<HTMLInputElement | null>>(
     Array.from<null>({ length: PIN_LENGTH }).fill(null)
   );
   /* eslint-enable @typescript-eslint/ban-types */
 
+  // Convert string value to array for PIN inputs - derived from props, no local state
+  const pinValues = useMemo(() => value.split('').slice(0, PIN_LENGTH), [value]);
   const codes = useMemo(() => normalize(pinValues, PIN_LENGTH), [pinValues]);
-
-  // Sync external value changes to internal state
-  useEffect(() => {
-    const newPinValues = value.split('').slice(0, PIN_LENGTH);
-    setPinValues(newPinValues);
-  }, [value]);
 
   // Auto-focus first input on mount
   useEffect(() => {
@@ -100,7 +83,8 @@ const PinPasswordInput = (
         ...codes.slice(targetId + trimmedChars.length, codes.length),
       ];
 
-      setPinValues(newValue);
+      // iOS WebView fix: Call onChange directly without local state update
+      // This prevents double rendering that causes layout shift
       onChange?.(newValue.join(''));
 
       // Move to the next target
@@ -178,7 +162,6 @@ const PinPasswordInput = (
 
           if (value) {
             const newCodes = Object.assign([], codes, { [targetId]: '' });
-            setPinValues(newCodes);
             onChange?.(newCodes.join(''));
             break;
           }
@@ -186,7 +169,6 @@ const PinPasswordInput = (
           if (previousTarget) {
             previousTarget.focus();
             const newCodes = Object.assign([], codes, { [targetId - 1]: '' });
-            setPinValues(newCodes);
             onChange?.(newCodes.join(''));
           }
 
