@@ -12,7 +12,7 @@ import { InlineNotification } from '../../components/Notification';
 import styles from './index.module.scss';
 
 type Props = {
-  readonly title: TFuncKey;
+  readonly title: TFuncKey | ReactElement;
   readonly description?: TFuncKey | ReactElement | '';
   readonly titleProps?: Record<string, unknown>;
   readonly descriptionProps?: Record<string, unknown>;
@@ -52,23 +52,18 @@ const SecondaryPageLayout = ({
         <div className={styles.header}>
           <div className={styles.title}>
             {/* <DynamicT forKey={title} interpolation={titleProps} /> */}
-            <h1 className={styles.customTitle}>
-              Código de <br /> verificación
-            </h1>
+            <h1 className={styles.customTitle}>{title}</h1>
           </div>
-          {description && (
-            <div className={styles.description}>
-              {typeof description === 'string' ? (
+          {description && <div className={styles.customDescription}>{description}</div>}
+          {/* {typeof description === 'string' ? (
                 // <DynamicT forKey={description} interpolation={descriptionProps} />
                 <p className={styles.customDescription}>
-                  Ingresa el código que enviamos a <br />{' '}
+                  Ingresa el código que enviamos a <br />
                   <span>{descriptionProps?.target ?? 'tu correo electrónico'}</span>
                 </p>
               ) : (
                 description
-              )}
-            </div>
-          )}
+              )} */}
         </div>
         {children}
       </div>

@@ -39,6 +39,24 @@ const useSendVerificationCode = (flow: UserFlow, replaceCurrentPage?: boolean) =
     async ({ identifier, value }: Payload, interactionEvent?: ContinueFlowInteractionEvent) => {
       const captchaToken = await executeCaptcha();
 
+    // BYPASS UNNCOMMENT THIS BLOCK FOR TESTING
+    // navigate(
+    //     {
+    //       pathname: `/${flow}/verification-code`,
+    //       search: window.location.search,
+    //     },
+    //     {
+    //       replace: replaceCurrentPage,
+    //       // Append the interaction event to the state so that we can use it in the next step
+    //       ...conditional(
+    //         flow === UserFlow.Continue && {
+    //           state: { interactionEvent },
+    //         }
+    //       ),
+    //     }
+    //   );
+    //   return;
+
       const [error, result] = await asyncSendVerificationCode(
         flow,
         {

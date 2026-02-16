@@ -1,5 +1,5 @@
 import { SignInIdentifier, type VerificationCodeIdentifier } from '@logto/schemas';
-import { t } from 'i18next';
+// import { t } from 'i18next';
 import { useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { validate } from 'superstruct';
@@ -13,7 +13,7 @@ import ErrorPage from '@/pages/ErrorPage';
 import { type IdentifierInputValue } from '@/shared/components/InputFields/SmartInputField';
 import { UserFlow } from '@/types';
 import { userFlowGuard } from '@/types/guard';
-import { formatPhoneNumberWithCountryCallingCode } from '@/utils/country-code';
+// import { formatPhoneNumberWithCountryCallingCode } from '@/utils/country-code';
 import { codeVerificationTypeMap } from '@/utils/sign-in-experience';
 
 type Parameters = {
@@ -41,6 +41,7 @@ const VerificationCode = () => {
 
   const [, userFlow] = validate(flow, userFlowGuard);
 
+  // BYPASS THIS BLOCK FOR TESTING
   if (!userFlow) {
     return <ErrorPage />;
   }
@@ -48,6 +49,7 @@ const VerificationCode = () => {
   const cachedIdentifierInputValue =
     flow === UserFlow.ForgotPassword ? forgotPasswordIdentifierInputValue : identifierInputValue;
 
+  // BYPASS THIS BLOCK FOR TESTING
   if (!isValidVerificationCodeIdentifier(cachedIdentifierInputValue)) {
     return <ErrorPage title="error.invalid_session" />;
   }
@@ -58,6 +60,7 @@ const VerificationCode = () => {
   const hasPasswordButton = userFlow === UserFlow.SignIn && methodSettings?.password;
 
   // VerificationId not found
+  // BYPASS THIS BLOCK FOR TESTING
   const verificationId = verificationIdsMap[codeVerificationTypeMap[type]];
   if (!verificationId) {
     return <ErrorPage title="error.invalid_session" rawMessage="Verification ID not found" />;
@@ -65,13 +68,22 @@ const VerificationCode = () => {
 
   return (
     <SecondaryPageLayout
-      title={`description.verify_${type}`}
-      description="description.enter_passcode"
-      descriptionProps={{
-        address: t(`description.${type === SignInIdentifier.Email ? 'email' : 'phone_number'}`),
-        target:
-          type === SignInIdentifier.Phone ? formatPhoneNumberWithCountryCallingCode(value) : value,
-      }}
+      title={
+        <>
+          Código de <br /> verificación
+        </>
+      }
+      description={
+        <>
+          Ingresa el código que enviamos a <br />
+          <span>{value ?? 'tu correo electrónico'}</span>
+        </>
+      }
+      // descriptionProps={{
+      //   address: t(`description.${type === SignInIdentifier.Email ? 'email' : 'phone_number'}`),
+      //   target:
+      //     type === SignInIdentifier.Phone ? formatPhoneNumberWithCountryCallingCode(value) : value,
+      // }}
     >
       <VerificationCodeContainer
         flow={userFlow}

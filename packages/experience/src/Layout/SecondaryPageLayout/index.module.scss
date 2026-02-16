@@ -2,25 +2,30 @@
 
 .wrapper {
   @include _.full-page;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .container {
   @include _.full-width;
-  margin-block: _.unit(2);
+  // margin-block: _.unit(2);
 }
 
 .customTitle {
   font: "Manrope", sans-serif;
   font-weight: 700;
-  font-size: 42px;
+  font-size: 32px;
   color: var(--color-type-primary);
   text-align: center;
   line-height: normal;
   letter-spacing: 0.2px;
+  margin-top: _.unit(0);
+  margin-bottom: _.unit(8);
 }
 
 .header {
-  margin-bottom: _.unit(6);
+  margin-bottom: _.unit(10);
 }
 
 .description {
@@ -45,7 +50,8 @@
 
 :global(body.mobile) {
   .container {
-    margin-block: _.unit(2);
+    // margin-block: _.unit(2);
+    margin: 0;
   }
 
   .title {

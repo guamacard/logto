@@ -1,9 +1,9 @@
-import { type VerificationCodeIdentifier } from '@logto/schemas';
+import { SignInIdentifier, type VerificationCodeIdentifier } from '@logto/schemas';
 import classNames from 'classnames';
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
 
-import TextLink from '@/components/TextLink';
+// import TextLink from '@/components/TextLink';
 import Button from '@/shared/components/Button';
 import VerificationCodeInput, { defaultLength } from '@/shared/components/VerificationCode';
 import { UserFlow } from '@/types';
@@ -22,6 +22,9 @@ type Props = {
 };
 
 const VerificationCode = ({
+  // BYPASS THIS BLOCK FOR TESTING
+  // flow = UserFlow.SignIn,
+  // identifier = { type: SignInIdentifier.Email, value: '' },
   flow,
   identifier,
   verificationId,
@@ -88,7 +91,7 @@ const VerificationCode = ({
         error={errorMessage}
         onChange={setCodeInput}
       />
-      <div className={styles.message}>
+      {/* <div className={styles.message}>
         {isRunning ? (
           <Trans components={{ span: <span key="counter" /> }}>
             {t('description.resend_after_seconds', { seconds })}
@@ -111,12 +114,12 @@ const VerificationCode = ({
             {t('description.resend_passcode')}
           </Trans>
         )}
-      </div>
+      </div> */}
       {flow === UserFlow.SignIn && hasPasswordButton && (
         <PasswordSignInLink className={styles.switch} />
       )}
       <Button
-        title="action.continue"
+        title="Verificar"
         type="primary"
         isLoading={isSubmitting}
         className={styles.continueButton}
@@ -127,6 +130,17 @@ const VerificationCode = ({
           }
 
           void handleSubmit(codeInput);
+        }}
+      />
+      <Button
+        title="Enviar nuevo código"
+        type="secondary"
+        isLoading={false}
+        className={styles.resendCodeButton}
+        onClick={async () => {
+          clearErrorMessage();
+          await onResendVerificationCode();
+          setCodeInput([]);
         }}
       />
     </form>

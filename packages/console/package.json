@@ -16,6 +16,7 @@
     "precommit": "lint-staged",
     "start": "vite",
     "dev": "vite",
+    "dev:host": "vite --host",
     "check": "tsc --noEmit",
     "build": "pnpm generate && vite build",
     "lint": "eslint --ext .ts --ext .tsx src",
