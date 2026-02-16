@@ -5,7 +5,6 @@
   justify-content: space-between;
   gap: _.unit(2);
   width: 100%;
-  // border: 1px solid red;
   overflow: hidden;
 
   .pinInput {
@@ -20,7 +19,9 @@
     color: #00002F;
     caret-color: #00002F;
     transition: border-color 0.2s ease;
-    font-size: 24px;
+    // Use max() to prevent iOS auto-zoom (requires min 16px)
+    font-size: max(16px, 24px);
+    font-weight: 600;
 
     &:focus {
       border-bottom-color: #00002F;
@@ -29,7 +30,7 @@
 
     // Password dots styling
     &[type='password'] {
-      font-size: 16px;
+      font-size: max(16px, 16px);
       letter-spacing: 0;
       line-height: 48px;
     }
@@ -44,8 +45,6 @@
 :global(body.desktop) {
   .pinContainer {
     .pinInput {
-      // font: var(--font-body-2);
-
       &:focus {
         border-bottom-color: #00002F;
       }

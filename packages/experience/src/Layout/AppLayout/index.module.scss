@@ -33,6 +33,12 @@
     // Use flexbox to control internal layout
     display: flex;
     flex-direction: column;
+    // iOS WebView fix: Prevent content shifting on keyboard events
+    // Force GPU acceleration and prevent layout recalculation
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
   }
 
   .signature {
