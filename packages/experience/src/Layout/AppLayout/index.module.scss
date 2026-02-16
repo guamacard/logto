@@ -2,10 +2,13 @@
 
 /* Main Layout */
 .viewBox {
-  position: absolute;
+  position: fixed;
   inset: 0;
-  overflow: auto;
-  // border: 1px solid red;
+  overflow-y: scroll;
+  // Prevent iOS elastic/rubber-band scrolling at container level
+  overscroll-behavior: none;
+  // Smooth momentum scrolling on iOS
+  -webkit-overflow-scrolling: touch;
 }
 
 .container {
