@@ -63,9 +63,56 @@ const PinPasswordInput = (
   // Auto-focus first input on mount
   useEffect(() => {
     if (isAutoFocus && pinValues.length === 0) {
-      inputReferences.current[0]?.focus();
+      const firstInput = inputReferences.current[0];
+      if (firstInput) {
+        // iOS WebView fix: Prevent auto-scroll on initial focus
+        const scrollX = window.scrollX;
+        const scrollY = window.scrollY;
+
+        firstInput.focus({ preventScroll: true });
+        window.scrollTo(scrollX, scrollY);
+      }
     }
   }, [isAutoFocus, pinValues.length]);
+
+  // iOS WebView fix: Prevent scroll-into-view behavior
+  useEffect(() => {
+    // Detect if we're in iOS
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+    if (!isIOS) {
+      return;
+    }
+
+    // Store original scroll position
+    let scrollPosition = { x: window.scrollX, y: window.scrollY };
+
+    const handleScroll = () => {
+      scrollPosition = { x: window.scrollX, y: window.scrollY };
+    };
+
+    const preventAutoScroll = (event: Event) => {
+      const target = event.target as HTMLElement;
+
+      // Check if the focused element is one of our PIN inputs
+      const isPinInput = inputReferences.current.some((input) => input === target);
+
+      if (isPinInput) {
+        // Prevent iOS from scrolling to center the input
+        requestAnimationFrame(() => {
+          window.scrollTo(scrollPosition.x, scrollPosition.y);
+        });
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    document.addEventListener('focusin', preventAutoScroll, true);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('focusin', preventAutoScroll, true);
+    };
+  }, []);
 
   const updateValue = useCallback(
     (data: string, targetId: number) => {
@@ -90,7 +137,18 @@ const PinPasswordInput = (
       // Move to the next target
       const nextTarget =
         inputReferences.current[Math.min(targetId + trimmedChars.length, codes.length - 1)];
-      nextTarget?.focus();
+
+      if (nextTarget) {
+        // iOS WebView fix: Prevent auto-scroll when focusing
+        // Store current scroll position before focus
+        const scrollX = window.scrollX;
+        const scrollY = window.scrollY;
+
+        nextTarget.focus({ preventScroll: true });
+
+        // Restore scroll position immediately after focus
+        window.scrollTo(scrollX, scrollY);
+      }
     },
     [codes, onChange]
   );
@@ -167,7 +225,13 @@ const PinPasswordInput = (
           }
 
           if (previousTarget) {
-            previousTarget.focus();
+            // iOS WebView fix: Prevent auto-scroll when focusing
+            const scrollX = window.scrollX;
+            const scrollY = window.scrollY;
+
+            previousTarget.focus({ preventScroll: true });
+            window.scrollTo(scrollX, scrollY);
+
             const newCodes = Object.assign([], codes, { [targetId - 1]: '' });
             onChange?.(newCodes.join(''));
           }
@@ -177,13 +241,29 @@ const PinPasswordInput = (
 
         case 'ArrowLeft': {
           event.preventDefault();
-          previousTarget?.focus();
+
+          if (previousTarget) {
+            // iOS WebView fix: Prevent auto-scroll when focusing
+            const scrollX = window.scrollX;
+            const scrollY = window.scrollY;
+
+            previousTarget.focus({ preventScroll: true });
+            window.scrollTo(scrollX, scrollY);
+          }
           break;
         }
 
         case 'ArrowRight': {
           event.preventDefault();
-          nextTarget?.focus();
+
+          if (nextTarget) {
+            // iOS WebView fix: Prevent auto-scroll when focusing
+            const scrollX = window.scrollX;
+            const scrollY = window.scrollY;
+
+            nextTarget.focus({ preventScroll: true });
+            window.scrollTo(scrollX, scrollY);
+          }
           break;
         }
 
