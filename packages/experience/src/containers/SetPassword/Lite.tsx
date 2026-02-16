@@ -30,12 +30,15 @@ const Lite = ({ className, autoFocus, onSubmit, errorMessage, clearErrorMessage 
     // register,
     control,
     handleSubmit,
+    watch,
     formState: { errors, isValid, isSubmitting },
   } = useForm<FieldState>({
     mode: 'onBlur',
     reValidateMode: 'onBlur',
     defaultValues: { newPassword: '' },
   });
+
+  const newPassword = watch('newPassword');
 
   useEffect(() => {
     if (!isValid) {
@@ -102,6 +105,7 @@ const Lite = ({ className, autoFocus, onSubmit, errorMessage, clearErrorMessage 
         title="Crear contraseña"
         htmlType="submit"
         isLoading={isSubmitting}
+        disabled={newPassword.length !== 6}
         className={styles.button}
       />
 

@@ -322,11 +322,11 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
       </div>
 
       <div>
-        {/* <div
-        style={{
-          height: '20px',
-        }}
-      /> */}
+        <div
+          style={{
+            height: '20px',
+          }}
+        />
 
         <Button
           name="submit"
