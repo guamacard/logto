@@ -2,6 +2,9 @@
 
 .form {
   @include _.flex-column;
+  // Add flex properties to position buttons at bottom
+  flex: 1;
+  justify-content: space-between;
 
   > * {
     width: 100%;
@@ -34,5 +37,18 @@
 
   .resendCodeButton {
     margin-top: _.unit(3);
+  }
+}
+
+:global(body.mobile) {
+  .form {
+    // Add bottom padding for better spacing when buttons are at bottom
+    padding-bottom: _.unit(5);
+
+    // Group the buttons together at the bottom
+    // The input field will be at the top, buttons at the bottom
+    > .continueButton {
+      margin-top: auto;
+    }
   }
 }

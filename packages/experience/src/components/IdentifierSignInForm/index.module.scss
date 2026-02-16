@@ -2,6 +2,9 @@
 
 .form {
   @include _.flex-column;
+  // Add flex properties to position button at bottom
+  flex: 1;
+  justify-content: space-between;
 
   > * {
     width: 100%;
@@ -25,5 +28,17 @@
 
   .hidden {
     display: none;
+  }
+}
+
+:global(body.mobile) {
+  .form {
+    // Add bottom padding for better spacing when button is at bottom
+    padding-bottom: _.unit(5);
+
+    // Ensure the button container doesn't have extra margin
+    > *:last-child {
+      margin-top: auto;
+    }
   }
 }

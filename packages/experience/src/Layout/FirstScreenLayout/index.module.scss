@@ -10,6 +10,14 @@
   }
 }
 
+:global(body.mobile) {
+  .wrapper {
+    // Use space-between to push button to bottom
+    justify-content: space-between;
+    min-height: 100%;
+  }
+}
+
 :global(body.desktop) {
   .wrapper {
     padding: _.unit(6) 0;
