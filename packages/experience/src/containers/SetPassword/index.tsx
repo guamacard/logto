@@ -17,7 +17,7 @@ const SetPassword = (props: Props) => {
   const { isForgotPasswordEnabled } = useForgotPasswordSettings();
 
   // BYPASS THIS BLOCK FOR TESTING
-  return <SetPasswordLite {...props} />;
+  // return <SetPasswordLite {...props} />;
 
   return isForgotPasswordEnabled ? (
     <SetPasswordLite {...props} />

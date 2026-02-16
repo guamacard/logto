@@ -10,6 +10,10 @@
 .container {
   @include _.full-width;
   // margin-block: _.unit(2);
+  // Add flex properties to support bottom-positioned buttons
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .customTitle {
@@ -34,21 +38,26 @@
 }
 
 .customDescription {
-  font: "Manrope", sans-serif;
+  // font: "Manrope", sans-serif;
   font-weight: 500;
   font-size: 16px;
-  color: var(--color-type-secondary);
+  color: #6A7187;
   text-align: center;
   line-height: normal;
   letter-spacing: 0.2px;
 
   span {
-    color: var(--color-type-primary);
-    font-weight: 500;
+    color: #6A7187;
+    font-weight: 700;
   }
 }
 
 :global(body.mobile) {
+  .wrapper {
+    // Ensure wrapper fills the viewport height for bottom positioning
+    min-height: 100%;
+  }
+
   .container {
     // margin-block: _.unit(2);
     margin: 0;
