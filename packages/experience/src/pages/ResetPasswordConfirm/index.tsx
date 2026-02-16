@@ -53,7 +53,13 @@ const ResetPasswordConfirm = () => {
         navigate(-2);
       },
       'user.same_password': (error) => {
-        setErrorMessage(error.message);
+        setErrorMessage(
+          error.message + ' Serás redirigido en 3 segundos para intentarlo de nuevo.'
+        );
+        setTimeout(() => {
+          clearErrorMessage();
+          navigate(-1);
+        }, 3500);
       },
       ...passwordRejectionErrorHandler,
     }),
@@ -69,11 +75,13 @@ const ResetPasswordConfirm = () => {
       }
 
       if (password !== firstPassword) {
-        setErrorMessage('Las contraseñas no coinciden');
+        setErrorMessage(
+          'Las contraseñas no coinciden. Serás redirigido en 3 segundos para intentarlo de nuevo.'
+        );
         setTimeout(() => {
           clearErrorMessage();
           navigate(-1);
-        }, 1500);
+        }, 3500);
         return;
       }
 
