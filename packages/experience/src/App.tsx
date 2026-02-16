@@ -38,6 +38,7 @@ import PasskeySetup from './pages/PasskeySetup';
 import Register from './pages/Register';
 import RegisterPassword from './pages/RegisterPassword';
 import ResetPassword from './pages/ResetPassword';
+import ResetPasswordConfirm from './pages/ResetPasswordConfirm';
 import ResetPasswordLanding from './pages/ResetPasswordLanding';
 import SignIn from './pages/SignIn';
 import SignInPassword from './pages/SignInPassword';
@@ -108,6 +109,7 @@ const App = () => {
                       <Route path="forgot-password">
                         <Route index element={<ForgotPassword />} />
                         <Route path="reset" element={<ResetPassword />} />
+                        <Route path="confirm" element={<ResetPasswordConfirm />} />
                       </Route>
 
                       {/* Passwordless verification code */}
