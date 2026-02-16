@@ -11,6 +11,7 @@ import CaptchaBox from '@/containers/CaptchaBox';
 // import ForgotPasswordLink from '@/containers/ForgotPasswordLink';
 import TermsAndPrivacyCheckbox from '@/containers/TermsAndPrivacyCheckbox';
 import useAdminHost from '@/hooks/use-admin-host';
+// import useGuamaChannel from '@/hooks/use-guama-channel';
 import useLoginHint from '@/hooks/use-login-hint';
 import usePasswordSignIn from '@/hooks/use-password-sign-in';
 import usePrefilledIdentifier from '@/hooks/use-prefilled-identifier';
@@ -47,6 +48,7 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
   const prefilledIdentifier = usePrefilledIdentifier({ enabledIdentifiers: signInMethods });
   const loginHint = useLoginHint();
   const { isAdminHost, setIsAdminHost } = useAdminHost();
+  // useGuamaChannel();
 
   // Disable the identifier input if there's a login hint from URL
   const isIdentifierDisabled = Boolean(loginHint);

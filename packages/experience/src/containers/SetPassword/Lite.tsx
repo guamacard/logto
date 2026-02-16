@@ -99,7 +99,7 @@ const Lite = ({ className, autoFocus, onSubmit, errorMessage, clearErrorMessage 
 
       <Button
         name="submit"
-        title="action.save_password"
+        title="Crear contraseña"
         htmlType="submit"
         isLoading={isSubmitting}
         className={styles.button}
