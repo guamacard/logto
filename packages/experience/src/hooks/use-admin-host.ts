@@ -10,14 +10,14 @@ const useAdminHost = () => {
       return false;
     }
 
-    if (window.location.search.includes('custom_check=true')) {
+    if (window.location.search.includes('legacy_inputs=true')) {
       return true;
     }
-    if (window.location.search.includes('custom_check=false')) {
+    if (window.location.search.includes('legacy_inputs=false')) {
       return false;
     }
 
-    const hostname = window.location.hostname;
+    const { hostname } = window.location;
     return hostname === 'auth-admin.guamainternal.com';
   }, []);
 

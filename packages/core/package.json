@@ -19,7 +19,6 @@
     "lint": "eslint --ext .ts --ext .json src",
     "lint:report": "pnpm lint --format json --output-file report.json",
     "dev": "tsup --config tsup.dev.config.ts",
-    "dev:host": "tsup --config tsup.dev.config.ts",
     "start": "NODE_ENV=production node .",
     "test:only": "NODE_OPTIONS=\"--experimental-vm-modules --max_old_space_size=4096\" jest --logHeapUsage",
     "test": "pnpm build:test && pnpm test:only",

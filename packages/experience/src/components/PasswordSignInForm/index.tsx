@@ -8,10 +8,10 @@ import UserInteractionContext from '@/Providers/UserInteractionContextProvider/U
 import LockIcon from '@/assets/icons/lock.svg?react';
 import { SmartInputField, PinPasswordInput, PasswordInputField } from '@/components/InputFields';
 import CaptchaBox from '@/containers/CaptchaBox';
-// import ForgotPasswordLink from '@/containers/ForgotPasswordLink';
+// Import ForgotPasswordLink from '@/containers/ForgotPasswordLink';
 import TermsAndPrivacyCheckbox from '@/containers/TermsAndPrivacyCheckbox';
 import useAdminHost from '@/hooks/use-admin-host';
-// import useGuamaChannel from '@/hooks/use-guama-channel';
+// Import useGuamaChannel from '@/hooks/use-guama-channel';
 import useLoginHint from '@/hooks/use-login-hint';
 import usePasswordSignIn from '@/hooks/use-password-sign-in';
 import usePrefilledIdentifier from '@/hooks/use-prefilled-identifier';
@@ -48,7 +48,7 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
   const prefilledIdentifier = usePrefilledIdentifier({ enabledIdentifiers: signInMethods });
   const loginHint = useLoginHint();
   const { isAdminHost, setIsAdminHost } = useAdminHost();
-  // useGuamaChannel();
+  // UseGuamaChannel();
 
   // Disable the identifier input if there's a login hint from URL
   const isIdentifierDisabled = Boolean(loginHint);
@@ -180,7 +180,7 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
               </div>
             );
           }}
-          // render={({ field, formState: { defaultValues } }) => {
+          // Render={({ field, formState: { defaultValues } }) => {
           //   return (
           //     <>
           //       <SmartInputField
@@ -343,15 +343,15 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
       /> */}
 
         {/* <div>
-        <input
-          type="checkbox"
-          name="remember"
-          value="true"
-          onChange={() => {
-            setIsAdminHost(!isAdminHost);
-          }}
-        />
-      </div> */}
+          <input
+            type="checkbox"
+            name="remember"
+            value="true"
+            onChange={() => {
+              setIsAdminHost(!isAdminHost);
+            }}
+          />
+        </div> */}
 
         <input hidden type="submit" />
       </div>
