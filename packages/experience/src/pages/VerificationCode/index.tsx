@@ -85,6 +85,12 @@ const VerificationCode = () => {
       //     type === SignInIdentifier.Phone ? formatPhoneNumberWithCountryCallingCode(value) : value,
       // }}
     >
+      <div
+        style={{
+          height: '45px',
+        }}
+      />
+
       <VerificationCodeContainer
         flow={userFlow}
         identifier={cachedIdentifierInputValue}
