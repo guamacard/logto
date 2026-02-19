@@ -19,7 +19,7 @@
 .customTitle {
   font: "Manrope", sans-serif;
   font-weight: 700;
-  font-size: 32px;
+  font-size: 36px;
   color: var(--color-type-primary);
   text-align: center;
   line-height: normal;
@@ -29,7 +29,7 @@
 }
 
 .header {
-  margin-bottom: _.unit(10);
+  // margin-bottom: _.unit(2);
 }
 
 .description {
@@ -39,11 +39,11 @@
 
 .customDescription {
   // font: "Manrope", sans-serif;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 16px;
   color: #6A7187;
   text-align: center;
-  line-height: normal;
+  line-height: 26px;
   letter-spacing: 0.2px;
 
   span {

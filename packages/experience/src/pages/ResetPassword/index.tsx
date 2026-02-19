@@ -71,6 +71,13 @@ const ResetPassword = () => {
           />
         </svg>
       </div>
+
+      <div
+        style={{
+          height: '15px',
+        }}
+      />
+
       <SetPassword
         autoFocus
         errorMessage={errorMessage}
