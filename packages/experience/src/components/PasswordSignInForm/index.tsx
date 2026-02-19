@@ -222,6 +222,12 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
           // }}
         />
 
+        <div
+          style={{
+            height: '10px',
+          }}
+        />
+
         {showSingleSignOnForm && (
           <div className={styles.message}>{t('description.single_sign_on_enabled')}</div>
         )}
