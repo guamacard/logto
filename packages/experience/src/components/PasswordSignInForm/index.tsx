@@ -336,7 +336,7 @@ const PasswordSignInForm = ({ className, autoFocus, signInMethods }: Props) => {
 
         <Button
           name="submit"
-          title={showSingleSignOnForm ? 'action.single_sign_on' : 'action.sign_in'}
+          title={showSingleSignOnForm ? 'action.single_sign_on' : 'Entrar'}
           icon={showSingleSignOnForm ? <LockIcon /> : undefined}
           htmlType="submit"
           isLoading={isSubmitting}
