@@ -26,6 +26,12 @@
     font-size: max(16px, 24px);
     font-weight: 600;
 
+    &[type='password'] {
+      font-size: max(16px, 16px);
+      letter-spacing: 0;
+      line-height: 48px;
+    }
+
     &:focus {
       border-bottom-color: #00002F;
       outline: none;

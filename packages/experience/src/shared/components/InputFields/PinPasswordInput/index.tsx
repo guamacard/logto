@@ -59,6 +59,17 @@ const PinPasswordInput = (
   // Convert string value to array for PIN inputs - derived from props, no local state
   const pinValues = useMemo(() => value.split('').slice(0, PIN_LENGTH), [value]);
   const codes = useMemo(() => normalize(pinValues, PIN_LENGTH), [pinValues]);
+  const isIOS = useMemo(() => {
+    if (typeof navigator === 'undefined') {
+      return false;
+    }
+
+    return (
+      /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.userAgent.includes('Mac') && navigator.maxTouchPoints > 1)
+    );
+  }, []);
+  const shouldUseTextSecurityMask = !showDigits && isIOS;
 
   // Auto-focus first input on mount
   useEffect(() => {
@@ -77,9 +88,6 @@ const PinPasswordInput = (
 
   // iOS WebView fix: Prevent scroll-into-view behavior
   useEffect(() => {
-    // Detect if we're in iOS
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-
     if (!isIOS) {
       return;
     }
@@ -112,7 +120,7 @@ const PinPasswordInput = (
       window.removeEventListener('scroll', handleScroll);
       document.removeEventListener('focusin', preventAutoScroll, true);
     };
-  }, []);
+  }, [isIOS]);
 
   const updateValue = useCallback(
     (data: string, targetId: number) => {
@@ -321,11 +329,11 @@ const PinPasswordInput = (
             name={`${name}_${index}`}
             data-id={index}
             value={codes[index]}
-            type={showDigits ? 'text' : 'password'}
+            type={shouldUseTextSecurityMask || showDigits ? 'text' : 'password'}
             inputMode="numeric"
             pattern="[0-9]*"
             autoComplete="off"
-            className={styles.pinInput}
+            className={`${styles.pinInput} ${shouldUseTextSecurityMask ? styles.pinInputMasked : ''}`}
             onPaste={onPasteHandler}
             onInput={onInputHandler}
             onKeyDown={onKeyDownHandler}
