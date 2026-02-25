@@ -38,6 +38,13 @@
       letter-spacing: 0;
       line-height: 48px;
     }
+
+    &.pinInputMasked {
+      font-size: max(16px, 16px);
+      letter-spacing: 0;
+      line-height: 48px;
+      -webkit-text-security: disc;
+    }
   }
 }
 

@@ -58,7 +58,7 @@
 
   &.disabled:not(.loading),
   &:disabled:not(.loading) {
-    background: var(--color-bg-state-disabled);
+    // background: var(--color-bg-state-disabled);
     color: var(--color-type-disable);
   }
 

@@ -3,7 +3,7 @@
 .wrapper {
   @include _.full-page;
   @include _.flex-column(normal, normal);
-  @include _.full-width;
+  // @include _.full-width;
 
   > *:last-child {
     margin-bottom: 0;
