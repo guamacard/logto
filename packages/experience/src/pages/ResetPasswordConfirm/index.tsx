@@ -104,7 +104,7 @@ const ResetPasswordConfirm = () => {
 
       if (isAppChannel) {
         clearLoginHint();
-        await redirectTo(new URL('com.guama.app://callback?event=sign-out'));
+        await redirectTo(new URL('com.guama.app://callback?event=password-reset-confirmed'));
       } else {
         navigate('/sign-in', { replace: true });
       }
